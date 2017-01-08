@@ -126,7 +126,7 @@ public class Words {
             }
         }  */
 
-         for (int index = 0; index < array1.size(); index++) {
+        for (int index = 0; index < array1.size(); index++) {
             String relatedWord = (String)array1.get(index);
             if (!relatedWord.equals(keyWord)) 
                 newArray.add(relatedWord);
@@ -136,7 +136,6 @@ public class Words {
             String relatedWord = (String)array2.get(index);
             if (!relatedWord.equals(keyWord) && !newArray.contains(relatedWord)) 
                newArray.add(relatedWord);
-            }
         }
 
         return newArray;
