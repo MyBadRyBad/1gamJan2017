@@ -1,5 +1,5 @@
 import java.util.Set;
-import java.io.Writer;
+import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -19,18 +19,19 @@ public class Words {
     public static void main(String[] args) throws Exception {
 
         if (args.length != 2) {
-            System.out.println("usage: java Words inputfilename.txt outputfilename.txt");
+            System.out.println("usage: java Words inputfilename.txt outputfile.json");
         } else {
             Words words = new Words();
-           // words.requestRelatedWords("test");
-            words.generateWords(args[0]);
+            JSONObject object = words.generateWords(args[0]);
+
+            FileWriter fileWriter = new FileWriter(args[1]);
+            fileWriter.write(object.toJSONString());
+            fileWriter.flush();
+            fileWriter.close();
         }
     }
-
-    /* 
-        synonyms: ["religious,"spiritual","clerical","holy","sectarian","moral"]
-        antonyms: ["irreligious","irreverent","evil","immoral","sinful"]
-    */
+    // TODO need to check for no matches
+    //{"error": "Word has no antonym in API"}
 
     public JSONObject generateWords(String filename) throws Exception {
         JSONObject jsonWords = new JSONObject();
@@ -42,8 +43,11 @@ public class Words {
 
         while ((strLine = br.readLine()) != null) {
             if (strLine.length() > 0 && strLine.charAt(0) != '#') {
-                JSONArray synonymsArray = (JSONArray)parser.parse(getSynonym(strLine));
-                JSONArray antonymsArray = (JSONArray)parser.parse(getAntonym(strLine));
+                Object synonyms = parser.parse(getSynonym(strLine));
+                Object antonyms = parser.parse(getAntonym(strLine));
+
+                JSONArray synonymsArray = (synonyms instanceof JSONArray) ? (JSONArray)synonyms : new JSONArray();
+                JSONArray antonymsArray = (antonyms instanceof JSONArray) ? (JSONArray)antonyms : new JSONArray();
 
                 // add the current word to the list of synonyms since the word is a synonym of itself
                 synonymsArray.add(strLine.toLowerCase());
@@ -59,14 +63,14 @@ public class Words {
                     String word = (String)antonymsArray.get(index);
                     addWordToJSONObject(word, jsonWords, antonymsArray, synonymsArray);
                 }
+
+                System.out.println(jsonWords.toJSONString()); 
             }
         }
 
-        System.out.println(jsonWords.toString());
-
         br.close();
 
-        return null;
+        return jsonWords;
     }
 
 
@@ -83,35 +87,11 @@ public class Words {
         }  else {
             JSONObject wordObject = new JSONObject();
             wordObject.put(KEY_SYNONYMS, copyJSONArray(word, synonymsArray));
-            jsonObject.put(KEY_ANTONYMS, copyJSONArray(word, antonymsArray));
+            wordObject.put(KEY_ANTONYMS, copyJSONArray(word, antonymsArray));
 
             jsonObject.put(word, wordObject);
         }
     }
-
- /*   private void addWordsToJSONObject(JSONObject jsonObject, JSONArray synonymsArray, JSONArray antonymsArray) {
-        for (int index = 0; index < synonymsArray.size(); index++) {
-            String synonym = synonymsArray.get(index);
-
-            if (jsonObject.containsKey(synonym)) {
-                JSONArray existingArray = jsonObject.get(synonym);
-                jsonObject.set(synonym, combineJSONArray(synonym, existingArray, synonymsArray));
-            }  else {
-                jsonObject.set(synonym, copyJSONArray(synonym, synonymsArray));
-            }
-        }
-
-        for (int index = 0; index < antonymsArray.size(); index++) {
-            String antonym = antonymsArray.get(index);
-
-            if (jsonObject.containsKey(antonym)) {
-                JSONArray existingArray = jsonObject.get(antonym);
-                jsonObject.set(antonym, combineJSONArray(antonym, existingArray, antonymsArray));
-            } else {
-                jsonObject.set(antonym, copyJSONArray(antonym, antonymsArray));
-            } 
-        }
-    }  */
 
     private JSONArray copyJSONArray(String keyWord, JSONArray array) {
         JSONArray newArray = new JSONArray();
@@ -127,7 +107,26 @@ public class Words {
     private JSONArray combineJSONArray(String keyWord, JSONArray array1, JSONArray array2) {
         JSONArray newArray = new JSONArray();
 
-        for (int index = 0; index < array1.size(); index++) {
+  /*      if (array1 != null) {
+            for (int index = 0; index < array1.size(); index++) {
+            String relatedWord = (String)array1.get(index);
+            if (!relatedWord.equals(keyWord)) 
+                newArray.add(relatedWord);
+            }
+        }
+
+        if (array2 != null) {
+            BOOL shouldAddWord = (array1 == null) ? (!relatedWord.equals(keyWord)) : 
+            (!relatedWord.equals(keyWord) && !newArray.contains(relatedWord)); 
+
+            for (int index = 0; index < array2.size(); index++) {
+            String relatedWord = (String)array2.get(index);
+            if (shouldAddWord) 
+               newArray.add(relatedWord);
+            }
+        }  */
+
+         for (int index = 0; index < array1.size(); index++) {
             String relatedWord = (String)array1.get(index);
             if (!relatedWord.equals(keyWord)) 
                 newArray.add(relatedWord);
@@ -136,7 +135,8 @@ public class Words {
         for (int index = 0; index < array2.size(); index++) {
             String relatedWord = (String)array2.get(index);
             if (!relatedWord.equals(keyWord) && !newArray.contains(relatedWord)) 
-                newArray.add(relatedWord);
+               newArray.add(relatedWord);
+            }
         }
 
         return newArray;
@@ -164,7 +164,8 @@ public class Words {
         }
         in.close();
 
-        //print result
+        System.out.println(response.toString());
+
         return response.toString();
     }
 
