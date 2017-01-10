@@ -1,4 +1,3 @@
-import java.util.Set;
 import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -30,8 +29,6 @@ public class Words {
             fileWriter.close();
         }
     }
-    // TODO need to check for no matches
-    //{"error": "Word has no antonym in API"}
 
     public JSONObject generateWords(String filename) throws Exception {
         JSONObject jsonWords = new JSONObject();
@@ -106,25 +103,6 @@ public class Words {
 
     private JSONArray combineJSONArray(String keyWord, JSONArray array1, JSONArray array2) {
         JSONArray newArray = new JSONArray();
-
-  /*      if (array1 != null) {
-            for (int index = 0; index < array1.size(); index++) {
-            String relatedWord = (String)array1.get(index);
-            if (!relatedWord.equals(keyWord)) 
-                newArray.add(relatedWord);
-            }
-        }
-
-        if (array2 != null) {
-            BOOL shouldAddWord = (array1 == null) ? (!relatedWord.equals(keyWord)) : 
-            (!relatedWord.equals(keyWord) && !newArray.contains(relatedWord)); 
-
-            for (int index = 0; index < array2.size(); index++) {
-            String relatedWord = (String)array2.get(index);
-            if (shouldAddWord) 
-               newArray.add(relatedWord);
-            }
-        }  */
 
         for (int index = 0; index < array1.size(); index++) {
             String relatedWord = (String)array1.get(index);
