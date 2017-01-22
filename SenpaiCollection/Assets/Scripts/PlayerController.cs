@@ -11,20 +11,19 @@ public class PlayerController : MonoBehaviour {
 	private Rigidbody m_playerRigidbody;
 	private QuerySDMecanimController m_sdMecanimController;
 
+	#region Unity callbacks
 	void Awake() {
 		// Set up references.
 		m_anim = GetComponent <Animator> ();
 		m_playerRigidbody = GetComponent <Rigidbody> ();
 		m_sdMecanimController = GetComponent<QuerySDMecanimController> ();
 	}
-
-	// Use this for initialization
+		
 	void Start () {
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
-		Debug.Log ("Player.position: " + gameObject.transform.position);
+		
 	}
 
 	void FixedUpdate ()
@@ -39,7 +38,9 @@ public class PlayerController : MonoBehaviour {
 		// Animate the player.
 		Animating (horizontal, vertical);
 	}
+	#endregion
 
+	#region movement methods
 	void Move (float horizontal, float vertical)
 	{
 		// Set the movement vector based on the axis input.
@@ -56,7 +57,9 @@ public class PlayerController : MonoBehaviour {
 			transform.rotation = Quaternion.LookRotation (m_movement);
 		}
 	}
+	#endregion
 
+	#region animation methods
 	void Animating (float h, float v)
 	{
 		// Create a boolean that is true if either of the input axes is non-zero.
@@ -68,4 +71,5 @@ public class PlayerController : MonoBehaviour {
 			m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_STAND);
 		}
 	}
+	#endregion
 }
