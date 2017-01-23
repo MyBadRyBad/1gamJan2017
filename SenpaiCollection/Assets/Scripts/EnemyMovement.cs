@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour {
 	public float wanderDuration = 20.0f;
 
 	// array of points where enemy will exit to when wandering is done
-	public Transform[] exitPoints;
+	private GameObject[] m_exitPoints;
 
 	// flag to prevent wanderDuration from running if enemy spawned outside of roam space
 	private bool m_canRoam = false;
@@ -50,7 +50,9 @@ public class EnemyMovement : MonoBehaviour {
 	}
 
 	void Start() {
-		if (exitPoints.Length == 0) {
+		m_exitPoints = GameObject.FindGameObjectsWithTag ("ExitPoint");
+
+		if (m_exitPoints.Length == 0) {
 			Debug.LogError("ExitPoints for " + gameObject.name + "is empty.");
 		}
 	}
@@ -85,8 +87,8 @@ public class EnemyMovement : MonoBehaviour {
 	void GoToRandomExit() {
 		if (!m_isExiting) {
 			// Set destination to a random exit point
-			int exitPointIndex = Random.Range (0, exitPoints.Length);
-			m_navMeshAgent.SetDestination (exitPoints [exitPointIndex].position);
+			int exitPointIndex = Random.Range (0, m_exitPoints.Length);
+			m_navMeshAgent.SetDestination (m_exitPoints [exitPointIndex].transform.position);
 
 			// flag isExiting to true to prevent a different exit point from being selected
 			m_isExiting = true;

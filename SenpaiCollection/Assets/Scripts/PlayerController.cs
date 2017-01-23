@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	public float speed = 6.0f;
+	public float defaultSpeed = 2.0f;
+	public float dashSpeed = 4.0f;
 
 	private Vector3 m_movement;
 	private Animator m_anim;
 	private Rigidbody m_playerRigidbody;
 	private QuerySDMecanimController m_sdMecanimController;
+
+	private float m_dashDelay = 1.0f;
+	private float m_dashDelayTimer;
+
+	private bool m_isDashing = false;
 
 	#region Unity callbacks
 	void Awake() {
@@ -17,6 +23,9 @@ public class PlayerController : MonoBehaviour {
 		m_anim = GetComponent <Animator> ();
 		m_playerRigidbody = GetComponent <Rigidbody> ();
 		m_sdMecanimController = GetComponent<QuerySDMecanimController> ();
+
+		// set up timers
+		m_dashDelayTimer = m_dashDelay;
 	}
 		
 	void Start () {
@@ -35,6 +44,9 @@ public class PlayerController : MonoBehaviour {
 		// Move the player around the scene.
 		Move (horizontal, vertical);
 
+		// Execute dash if player holds down button
+		Dash (Input.GetButton ("Jump"));
+
 		// Animate the player.
 		Animating (horizontal, vertical);
 	}
@@ -43,6 +55,9 @@ public class PlayerController : MonoBehaviour {
 	#region movement methods
 	void Move (float horizontal, float vertical)
 	{
+		// change speed according to walk/dash state
+		float speed = (m_isDashing) ? dashSpeed : defaultSpeed;
+
 		// Set the movement vector based on the axis input.
 		m_movement.Set (horizontal, 0f, vertical);
 
@@ -57,6 +72,10 @@ public class PlayerController : MonoBehaviour {
 			transform.rotation = Quaternion.LookRotation (m_movement);
 		}
 	}
+
+	void Dash(bool shouldDash) {
+		m_isDashing = shouldDash;
+	}
 	#endregion
 
 	#region animation methods
@@ -66,7 +85,11 @@ public class PlayerController : MonoBehaviour {
 		bool walking = (h != 0f) || (v != 0f);
 
 		if (walking) {
-			m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_WALK);
+			if (m_isDashing) {
+				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_RUN);
+			} else {
+				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_WALK);
+			}
 		} else {
 			m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_STAND);
 		}
