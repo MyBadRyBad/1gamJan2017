@@ -11,14 +11,23 @@ public class GameManager : MonoBehaviour {
 	// start time for the game timer
 	public float startTime = 30.0f;
 
+	// reference to dash super text
+	public SuperTextMesh dashTextMesh;
+
+	public Image dashBar;
+
 	// UI elements
-	public Text timerText;
-	public Text pointsText;
+	public SuperTextMesh timerText;
+	public SuperTextMesh pointsText;
 
 	// game timer
 	private float currentTime;
 
-	private int points;
+	// global points
+	private int m_points;
+
+	// reference to the DashBarManager
+	private DashBarManager m_dashBarManager;
 
 	#region Unity callback
 	// Use this for initialization
@@ -26,10 +35,16 @@ public class GameManager : MonoBehaviour {
 		// setup reference to game manager
 		if (gm == null)
 			gm = this.GetComponent<GameManager>();
+
 	}
 
 	void Start () {
 		currentTime = startTime;
+
+		// get a reference to the DashBarManager
+		if (dashBar != null) {
+			m_dashBarManager = dashBar.GetComponent<DashBarManager> ();
+		}
 	}
 	
 	// Update is called once per frame
@@ -50,11 +65,19 @@ public class GameManager : MonoBehaviour {
 	#region UI methods
 	void UpdateUI() {
 		if (timerText) {
-			timerText.text = currentTime.ToString ("F2");
+
+
+			timerText.Text = currentTime.ToString ("F1");
 		}
 
 		if (pointsText) {
-			pointsText.text = points.ToString ();
+			pointsText.Text = m_points.ToString ();
+		}
+	}
+
+	public void UpdateDashTextMesh(string newText) {
+		if (dashTextMesh.Text != newText) {
+			dashTextMesh.Text = newText;
 		}
 	}
 	#endregion
@@ -62,11 +85,19 @@ public class GameManager : MonoBehaviour {
 
 	#region game logic
 	public void AddPoints(int number) {
-		points = points + number;
+		m_points = m_points + number;
 	}
 
 	public void AddTime(float time) {
 		currentTime = currentTime + time;
+	}
+		
+	#endregion
+
+	#region getter/setter methods
+
+	public DashBarManager DashBarManager() {
+		return m_dashBarManager;
 	}
 	#endregion
 }
