@@ -157,7 +157,18 @@ public class QuerySDMecanimController : MonoBehaviour {
 		if (isChangeMechanimState) {
 			Animator animator = queryBodyParts.GetComponent<Animator> ();
 
-			animator.speed = (animNumber == QueryChanSDAnimationType.NORMAL_RUN) ? 1.5f : 2.0f;
+			switch (animNumber) {
+			case QueryChanSDAnimationType.NORMAL_RUN:
+				animator.speed = 1.5f;
+				break;
+			case QueryChanSDAnimationType.NORMAL_IDLE:
+				animator.speed = 0.9f;
+				break;
+			default:
+				animator.speed = 2.0f;
+				break;
+			}
+				
 			animator.SetInteger("AnimIndex", (int)animNumber);
 		}
 
