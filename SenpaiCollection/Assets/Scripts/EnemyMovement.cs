@@ -14,6 +14,9 @@ public class EnemyMovement : MonoBehaviour {
 	// array of points where enemy will exit to when wandering is done
 	private GameObject[] m_exitPoints;
 
+	// previous position to detect if the object move
+	private Vector3 m_previousPosition;
+
 	// flag to prevent wanderDuration from running if enemy spawned outside of roam space
 	private bool m_canRoam = false;
 
@@ -116,10 +119,13 @@ public class EnemyMovement : MonoBehaviour {
 
 	#region Animation Methods
 	void UpdateAnimation() {
-		if (m_navMeshAgent.velocity.x > 0 || m_navMeshAgent.velocity.z > 0 || m_navMeshAgent.velocity.y > 0) {
+		if (transform.position != m_previousPosition && m_navMeshAgent.velocity != Vector3.zero) {
+			m_animation.Play ("walk_00");
 		} else {
 			m_animation.Play ("idle_01");
 		}
+
+		m_previousPosition = transform.position;
 
 	}
 
