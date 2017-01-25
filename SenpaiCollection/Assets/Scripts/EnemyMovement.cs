@@ -8,13 +8,16 @@ public class EnemyMovement : MonoBehaviour {
 	// how long should the enemy wander before leaving
 	public float wanderDuration = 20.0f;
 
+	// reference to the animation
+	private Animation m_animation;
+
 	// array of points where enemy will exit to when wandering is done
 	private GameObject[] m_exitPoints;
 
 	// flag to prevent wanderDuration from running if enemy spawned outside of roam space
 	private bool m_canRoam = false;
 
-	// flags to trigger exit from 
+	// flags to trigger exit 
 	[SerializeField]
 	private bool m_shouldExit = false;
 	[SerializeField]
@@ -47,6 +50,9 @@ public class EnemyMovement : MonoBehaviour {
 
 		// setup roam timer
 		m_roamPointTimer = 0.0f;
+
+		// get reference to animator
+		m_animation = GetComponent<Animation>();
 	}
 
 	void Start() {
@@ -59,6 +65,8 @@ public class EnemyMovement : MonoBehaviour {
 		
 	// Update is called once per frame
 	void Update () {
+		UpdateAnimation ();
+
 		if (!m_canRoam) 
 			TriggerWanderDuration ();
 
@@ -102,6 +110,19 @@ public class EnemyMovement : MonoBehaviour {
 			m_shouldExit = true;
 		}
 	}
+
+	#endregion
+
+
+	#region Animation Methods
+	void UpdateAnimation() {
+		if (m_navMeshAgent.velocity.x > 0 || m_navMeshAgent.velocity.z > 0 || m_navMeshAgent.velocity.y > 0) {
+		} else {
+			m_animation.Play ("idle_01");
+		}
+
+	}
+
 
 	#endregion
 
