@@ -13,9 +13,7 @@ public class PlayerController : MonoBehaviour {
 	public float dashIncreaseRate = 1.25f;
 	public float dashRefreshDelay = 2.0f;
 
-	public float jumpAnimationLength = 0.5f;
-	public float fallAnimationLength = 1.0f;
-	public float endAnimationLength = 1.0f;
+
 
 	// movement and animation
 	private Vector3 m_movement;
@@ -31,16 +29,27 @@ public class PlayerController : MonoBehaviour {
 	private bool m_triggerJump = false;
 
 	[SerializeField]
-	private float m_jumpVelocity = 175.0f;
+	private Vector3 m_jumpFowardVector;
+	private float m_jumpForwardVelocity = 100.0f;
+	private float m_jumpUpwardVelocity = 175.0f;
+	private float m_preparationJumpForwardVelocity = 100.0f;
+	private float m_preparationJumpUpwardVelocity = 75.0f;
+	private float m_fallForwardVelocity = 100.0f;
+	private float m_fallUpwardVelocity = 175.0f;
+
+	private float m_preparationJumpAnimationWait = 0.6f;
+	public float m_jumpAnimationWait = 0.5f;
+	public float m_fallAnimationWait = 1.0f;
+	public float m_endAnimationWait = 1.0f;
 
 	// flag to know when character is dashing
 	private bool m_isDashing = false;
 	private bool m_dashDelayTriggered = false;
 
-
 	// flag to trigger grab
 	[SerializeField]
-	private bool m_isGrabbing = false;
+	private bool m_disableControls = false;
+
 
 	#region Unity callbacks
 	void Awake() {
@@ -76,7 +85,7 @@ public class PlayerController : MonoBehaviour {
 		Dash (Input.GetButton ("Jump"));
 
 		// Execute jump if necessary
-		UpdateVelocity();
+		UpdateJumpVelocity();
 
 		// Animate the player.
 		Animating (horizontal, vertical);
@@ -106,11 +115,11 @@ public class PlayerController : MonoBehaviour {
 
 
 	void UpdateGrabTimer() {
-		if (m_isGrabbing) {
+		if (m_disableControls) {
 			m_grabTimer -= Time.deltaTime;
 
 			if (m_grabTimer <= 0.0f) {
-				m_isGrabbing = false;
+				m_disableControls = false;
 			}
 		}
 	}
@@ -167,51 +176,55 @@ public class PlayerController : MonoBehaviour {
 	#region animation methods
 	void Animating (float h, float v)
 	{
-		if (m_isGrabbing) {
+		if (m_disableControls) {
 
 		} else {
 			AnimateWalking (h, v);
 		}
 	}
-
+		
 	IEnumerator ExecuteGrab() {
-		m_isGrabbing = true;
+		m_disableControls = true;
 
-		m_jumpVelocity = 50.0f;
-		m_triggerJump = true;
-
-		// animate the prepare jump
+		// move the player forward and animate the pre-jump
+		TriggerJump (m_preparationJumpForwardVelocity, m_preparationJumpUpwardVelocity);
 		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE);
+		yield return new WaitForSeconds (m_preparationJumpAnimationWait);
 
-		yield return new WaitForSeconds (0.6f);
-
-		// animate the prepare jump
+		// animate the actual jump
 		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE);
+		yield return new WaitForSeconds(m_jumpAnimationWait);
 
-		yield return new WaitForSeconds(jumpAnimationLength);
-
+		// move the player forward animate the laydown
+		TriggerJump(m_fallForwardVelocity, m_fallUpwardVelocity);
 		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_FALL);
 
-		yield return new WaitForSeconds (0.2f);
-		// trigger upward velocity
-		m_jumpVelocity = 175.0f;
-		m_triggerJump = true;
+		// wait a bit after the character reaches the floor
+		yield return new WaitForSeconds(m_fallAnimationWait);
 
-		yield return new WaitForSeconds(fallAnimationLength - 0.2f);
-
+		// end the entire animation
 		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_END);
-		m_isGrabbing = false;
+		m_disableControls = false;
 	}
-		
-	void UpdateVelocity() {
+
+	void TriggerJump (float forwardVelocity, float upwardVelocity) {
+		m_jumpForwardVelocity = forwardVelocity;
+		m_jumpUpwardVelocity = upwardVelocity;
+		m_triggerJump = true;
+	}
+
+	void UpdateJumpVelocity() {
 		if (m_triggerJump) {
 			m_triggerJump = false;
-			m_playerRigidbody.AddForce (Vector3.up * m_jumpVelocity);
+
+			Vector3 forwardForce = transform.forward * m_jumpForwardVelocity;
+			Vector3 upwardForce = transform.up * m_jumpUpwardVelocity;
+			m_playerRigidbody.AddForce(forwardForce + upwardForce);
 		}
-	}
+	} 
 
 	void AnimateWalking(float h, float v) {
-		if (!m_isGrabbing) {
+		if (!m_disableControls) {
 			// Create a boolean that is true if either of the input axes is non-zero.
 			bool walking = (h != 0f) || (v != 0f);
 
