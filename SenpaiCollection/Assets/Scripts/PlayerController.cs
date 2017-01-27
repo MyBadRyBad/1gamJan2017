@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour {
 	public float dashIncreaseRate = 1.25f;
 	public float dashRefreshDelay = 2.0f;
 
+	public float jumpAnimationLength = 0.5f;
+	public float fallAnimationLength = 1.0f;
+	public float endAnimationLength = 1.0f;
+
 	// movement and animation
 	private Vector3 m_movement;
 	private Rigidbody m_playerRigidbody;
@@ -21,10 +25,22 @@ public class PlayerController : MonoBehaviour {
 	// dash delay
 	private float m_dashDelayTimer;
 
+	// grab timer
+	private float m_grabDelay = 2.0f;
+	private float m_grabTimer;
+	private bool m_triggerJump = false;
+
+	[SerializeField]
+	private float m_jumpVelocity = 175.0f;
+
 	// flag to know when character is dashing
 	private bool m_isDashing = false;
 	private bool m_dashDelayTriggered = false;
 
+
+	// flag to trigger grab
+	[SerializeField]
+	private bool m_isGrabbing = false;
 
 	#region Unity callbacks
 	void Awake() {
@@ -41,6 +57,10 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 		UpdateDash ();
+
+		if (Input.GetKeyDown (KeyCode.Z)) {
+			StartCoroutine(ExecuteGrab());
+		}
 	}
 
 	void FixedUpdate ()
@@ -54,6 +74,9 @@ public class PlayerController : MonoBehaviour {
 
 		// Execute dash if player holds down button
 		Dash (Input.GetButton ("Jump"));
+
+		// Execute jump if necessary
+		UpdateVelocity();
 
 		// Animate the player.
 		Animating (horizontal, vertical);
@@ -80,6 +103,18 @@ public class PlayerController : MonoBehaviour {
 			transform.rotation = Quaternion.LookRotation (m_movement);
 		}
 	}
+
+
+	void UpdateGrabTimer() {
+		if (m_isGrabbing) {
+			m_grabTimer -= Time.deltaTime;
+
+			if (m_grabTimer <= 0.0f) {
+				m_isGrabbing = false;
+			}
+		}
+	}
+
 	#endregion
 
 	#region Dashing
@@ -132,17 +167,63 @@ public class PlayerController : MonoBehaviour {
 	#region animation methods
 	void Animating (float h, float v)
 	{
-		// Create a boolean that is true if either of the input axes is non-zero.
-		bool walking = (h != 0f) || (v != 0f);
+		if (m_isGrabbing) {
 
-		if (walking) {
-			if (m_isDashing && !GameManager.gm.DashBarManager().IsEmpty ()) {
-				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_RUN);
-			} else {
-				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_WALK);
-			}
 		} else {
-			m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_IDLE);
+			AnimateWalking (h, v);
+		}
+	}
+
+	IEnumerator ExecuteGrab() {
+		m_isGrabbing = true;
+
+		m_jumpVelocity = 50.0f;
+		m_triggerJump = true;
+
+		// animate the prepare jump
+		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE);
+
+		yield return new WaitForSeconds (0.6f);
+
+		// animate the prepare jump
+		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE);
+
+		yield return new WaitForSeconds(jumpAnimationLength);
+
+		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_FALL);
+
+		yield return new WaitForSeconds (0.2f);
+		// trigger upward velocity
+		m_jumpVelocity = 175.0f;
+		m_triggerJump = true;
+
+		yield return new WaitForSeconds(fallAnimationLength - 0.2f);
+
+		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_END);
+		m_isGrabbing = false;
+	}
+		
+	void UpdateVelocity() {
+		if (m_triggerJump) {
+			m_triggerJump = false;
+			m_playerRigidbody.AddForce (Vector3.up * m_jumpVelocity);
+		}
+	}
+
+	void AnimateWalking(float h, float v) {
+		if (!m_isGrabbing) {
+			// Create a boolean that is true if either of the input axes is non-zero.
+			bool walking = (h != 0f) || (v != 0f);
+
+			if (walking) {
+				if (m_isDashing && !GameManager.gm.DashBarManager().IsEmpty ()) {
+					m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_RUN);
+				} else {
+					m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_WALK);
+				}
+			} else {
+				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_IDLE);
+			}
 		}
 	}
 	#endregion

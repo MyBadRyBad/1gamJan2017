@@ -6,7 +6,7 @@ public class QuerySDMecanimController : MonoBehaviour {
 
 	[SerializeField]
 	GameObject queryBodyParts;
-	
+
 	public enum QueryChanSDAnimationType
 	{
 		// Normal Motion
@@ -77,8 +77,13 @@ public class QuerySDMecanimController : MonoBehaviour {
 		// Hokkaido Pose
 		HOKKAIDO_POSE_COLD = 450,
 		HOKKAIDO_POSE_BEAMBITIOUS = 451,
-		HOKKAIDO_POSE_BEAR = 452
+		HOKKAIDO_POSE_BEAR = 452,
 
+
+		JUMP_PREPARE = 601,
+		JUMP_FALL = 602, 
+		JUMP_END = 603
+		
 	}
 
 	public enum QueryChanSDHandType
@@ -89,15 +94,14 @@ public class QuerySDMecanimController : MonoBehaviour {
 		PAPER = 2
 
 	}
-
+			
 	void Update()
 	{
 		queryBodyParts.transform.localPosition = Vector3.zero;
 		queryBodyParts.transform.localRotation = Quaternion.identity;
 
 	}
-
-
+		
 	public void ChangeAnimation (QueryChanSDAnimationType animNumber, bool isChangeMechanimState=true)
 	{
 
@@ -164,12 +168,23 @@ public class QuerySDMecanimController : MonoBehaviour {
 			case QueryChanSDAnimationType.NORMAL_IDLE:
 				animator.speed = 0.9f;
 				break;
+			case QueryChanSDAnimationType.NORMAL_STAND:
+				animator.speed = 8.0f;
+				break;
+			case QueryChanSDAnimationType.JUMP_PREPARE:
+				animator.speed = 1.0f;
+				break;
 			default:
 				animator.speed = 2.0f;
 				break;
 			}
 				
-			animator.SetInteger("AnimIndex", (int)animNumber);
+			if (animNumber == QueryChanSDAnimationType.JUMP_PREPARE) {
+				animator.SetTrigger ("Jump");
+			} else {
+				animator.SetInteger("AnimIndex", (int)animNumber);
+			}
+
 		}
 
 	}
