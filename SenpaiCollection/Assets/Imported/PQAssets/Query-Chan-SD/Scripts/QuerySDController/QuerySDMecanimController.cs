@@ -101,6 +101,18 @@ public class QuerySDMecanimController : MonoBehaviour {
 		queryBodyParts.transform.localRotation = Quaternion.identity;
 
 	}
+
+	public void ChangeAnimationWithSpeed (QueryChanSDAnimationType animNumber, float speed) {
+		Animator animator = queryBodyParts.GetComponent<Animator> ();
+
+
+		animator.speed = speed;
+		if (animNumber == QueryChanSDAnimationType.JUMP_PREPARE) {
+			animator.SetTrigger ("Jump");
+		} else {
+			animator.SetInteger("AnimIndex", (int)animNumber);
+		}
+	}
 		
 	public void ChangeAnimation (QueryChanSDAnimationType animNumber, bool isChangeMechanimState=true)
 	{
