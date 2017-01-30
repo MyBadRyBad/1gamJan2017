@@ -24,7 +24,7 @@ public class DashBarManager : MonoBehaviour {
 	public void Decrease(float rate) {
 		if (m_currentWidth <= 0.0f) return;
 		
-		m_currentWidth = Mathf.Max(0.0f, m_currentWidth - rate);
+		m_currentWidth = Mathf.Max(0.0f, m_currentWidth - (rate * Time.deltaTime));
 		m_dashBar.rectTransform.sizeDelta = new Vector2 (m_currentWidth, m_dashBar.rectTransform.rect.height);
 
 	}
@@ -32,7 +32,7 @@ public class DashBarManager : MonoBehaviour {
 	public void Increase(float rate) {
 		if (m_currentWidth >= m_maxWidth) return;
 
-		m_currentWidth = Mathf.Min(m_maxWidth, m_currentWidth + rate);
+		m_currentWidth = Mathf.Min(m_maxWidth, m_currentWidth + (rate * Time.deltaTime));
 		m_dashBar.rectTransform.sizeDelta = new Vector2 (m_currentWidth, m_dashBar.rectTransform.rect.height);
 
 	}
