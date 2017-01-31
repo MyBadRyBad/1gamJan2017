@@ -128,8 +128,6 @@ public class EnemyMovement : MonoBehaviour {
 		m_previousPosition = transform.position;
 
 	}
-
-
 	#endregion
 
 	#region Roaming Methods 
@@ -153,6 +151,12 @@ public class EnemyMovement : MonoBehaviour {
 		float x = Random.Range (min_x, max_x);
 		float z = Random.Range (min_z, max_z);
 		return new Vector3 (x, 0.0f, z);
+	}
+	#endregion
+
+	#region collision methods
+	public void TriggerCollision() {
+
 	}
 	#endregion
 }

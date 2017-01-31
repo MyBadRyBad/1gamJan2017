@@ -28,19 +28,27 @@ public class PlayerController : MonoBehaviour {
 	private float m_grabTimer;
 	private bool m_triggerJump = false;
 
-	[SerializeField]
 	private Vector3 m_jumpFowardVector;
-	private float m_jumpForwardVelocity = 100.0f;
-	private float m_jumpUpwardVelocity = 175.0f;
-	private float m_preparationJumpForwardVelocity = 100.0f;
-	private float m_preparationJumpUpwardVelocity = 75.0f;
-	private float m_fallForwardVelocity = 100.0f;
-	private float m_fallUpwardVelocity = 175.0f;
+	 private float m_jumpForwardVelocity = 100.0f;
+	 private float m_jumpUpwardVelocity = 175.0f;
+	[Header("Jump Velocities")]
+	[SerializeField] private float m_hopForwardVelocity = 100.0f;
+	[SerializeField] private float m_hopUpwardVelocity = 75.0f;
+	[SerializeField] private float m_fallForwardVelocity = 100.0f;
+	[SerializeField] private float m_fallUpwardVelocity = 175.0f;
 
-	private float m_preparationJumpAnimationWait = 0.6f;
-	public float m_jumpAnimationWait = 0.5f;
-	public float m_fallAnimationWait = 1.0f;
-	public float m_endAnimationWait = 1.0f;
+	[Header("Wait Between Animations")]
+	[SerializeField] private float m_preparationJumpAnimationWait = 0.6f;
+	[SerializeField] private float m_jumpAnimationWait = 0.5f;
+	[SerializeField] private float m_fallAnimationWait = 1.0f;
+	[SerializeField] private float m_endAnimationWait = 1.0f;
+
+	[Header("Animation Speeds")]
+	[SerializeField] private float m_firstHopAnimationSpeed = 1.0f;
+	[SerializeField] private float m_secondHopAnimationSpeed = 1.0f;
+	[SerializeField] private float m_jumpFallAnimationSpeed = 2.0f;
+	[SerializeField] private float m_jumpEndAnimationSpeed = 2.0f;
+
 
 	// flag to know when character is dashing
 	private bool m_isDashing = false;
@@ -187,23 +195,24 @@ public class PlayerController : MonoBehaviour {
 		m_disableControls = true;
 
 		// move the player forward and animate the pre-jump
-		TriggerJump (m_preparationJumpForwardVelocity, m_preparationJumpUpwardVelocity);
-		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE);
-		yield return new WaitForSeconds (m_preparationJumpAnimationWait);
+		TriggerJump (m_hopForwardVelocity, m_hopUpwardVelocity);
+	//	m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE);
+	//	m_sdMecanimController.ChangeAnimationWithSpeed(QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE, m_firstHopAnimationSpeed);
+	//	yield return new WaitForSeconds (m_preparationJumpAnimationWait);
 
 		// animate the actual jump
-		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE);
+		m_sdMecanimController.ChangeAnimationWithSpeed(QuerySDMecanimController.QueryChanSDAnimationType.JUMP_PREPARE, m_secondHopAnimationSpeed);
 		yield return new WaitForSeconds(m_jumpAnimationWait);
 
 		// move the player forward animate the laydown
 		TriggerJump(m_fallForwardVelocity, m_fallUpwardVelocity);
-		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_FALL);
+		m_sdMecanimController.ChangeAnimationWithSpeed(QuerySDMecanimController.QueryChanSDAnimationType.JUMP_FALL, m_jumpFallAnimationSpeed);
 
 		// wait a bit after the character reaches the floor
 		yield return new WaitForSeconds(m_fallAnimationWait);
 
 		// end the entire animation
-		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.JUMP_END);
+		m_sdMecanimController.ChangeAnimationWithSpeed(QuerySDMecanimController.QueryChanSDAnimationType.JUMP_END, m_jumpEndAnimationSpeed);
 		m_disableControls = false;
 	}
 
