@@ -32,7 +32,7 @@ public class PlayerCollision : MonoBehaviour {
 		if (other.CompareTag("Enemy")) {
 			EnemyMovement enemyMovement = other.gameObject.GetComponent<EnemyMovement>();
 
-			if (!enemyMovement.DidCollapse ()) {
+			if (!enemyMovement.DidCollapse () && !m_playerController.IsDiving()) {
 				
 				// have the enemy face the player
 				other.gameObject.transform.LookAt(transform);

@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private float m_jumpEndAnimationSpeed = 2.0f;
 
 
-
+	[SerializeField]
 	private PlayerState m_playerState;
 
 	// flag to know when character is dashing
@@ -156,7 +156,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void UpdateDash() {
-		if (m_isDashing && !GameManager.gm.DashBarManager().IsEmpty ()) {
+		if (IsDashing() && !GameManager.gm.DashBarManager().IsEmpty ()) {
 			// update the dash text to animate
 			GameManager.gm.UpdateDashTextMesh ("<j>Dash");
 
@@ -268,6 +268,10 @@ public class PlayerController : MonoBehaviour {
 	#endregion
 
 	public void Dive () {
+		// stop any existing routine
+		StopCoroutine(ExecuteDive());
+
+		// start coroutine
 		StartCoroutine(ExecuteDive());
 	}
 

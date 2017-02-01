@@ -82,7 +82,11 @@ public class QuerySDMecanimController : MonoBehaviour {
 
 		JUMP_PREPARE = 601,
 		JUMP_FALL = 602, 
-		JUMP_END = 603
+		JUMP_END = 603,
+
+		WALK_ANY_STATE = 605,
+		RUN_ANY_STATE = 606,
+		IDLE_ANY_STATE = 707
 		
 	}
 
@@ -111,7 +115,7 @@ public class QuerySDMecanimController : MonoBehaviour {
 			animator.SetTrigger ("Jump");
 		} else {
 			animator.SetInteger("AnimIndex", (int)animNumber);
-		}
+		} 
 	}
 		
 	public void ChangeAnimation (QueryChanSDAnimationType animNumber, bool isChangeMechanimState=true)
@@ -186,6 +190,9 @@ public class QuerySDMecanimController : MonoBehaviour {
 			case QueryChanSDAnimationType.JUMP_PREPARE:
 				animator.speed = 1.0f;
 				break;
+			case QueryChanSDAnimationType.JUMP_END:
+				animator.speed = 8.0f;
+				break;
 			default:
 				animator.speed = 2.0f;
 				break;
@@ -195,7 +202,8 @@ public class QuerySDMecanimController : MonoBehaviour {
 				animator.SetTrigger ("Jump");
 			} else {
 				animator.SetInteger("AnimIndex", (int)animNumber);
-			}
+			} 
+
 
 		}
 
