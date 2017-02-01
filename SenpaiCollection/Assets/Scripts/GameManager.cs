@@ -8,17 +8,21 @@ public class GameManager : MonoBehaviour {
 	// static reference for game manager
 	public static GameManager gm;
 
-	// start time for the game timer
-	public float startTime = 30.0f;
+	// refernce to the mainCamera
+	public Camera mainCamera;
 
 	// reference to dash super text
 	public SuperTextMesh dashTextMesh;
 
+	// reference to the dash bar
 	public Image dashBar;
 
 	// UI elements
 	public SuperTextMesh timerText;
 	public SuperTextMesh pointsText;
+
+	// start time for the game timer
+	public float startTime = 30.0f;
 
 	// game timer
 	private float currentTime;
@@ -28,6 +32,9 @@ public class GameManager : MonoBehaviour {
 
 	// reference to the DashBarManager
 	private DashBarManager m_dashBarManager;
+
+	// refernce to the CameraShake script
+	private CameraShake m_cameraShake;
 
 	#region Unity callback
 	// Use this for initialization
@@ -44,6 +51,10 @@ public class GameManager : MonoBehaviour {
 		// get a reference to the DashBarManager
 		if (dashBar != null) {
 			m_dashBarManager = dashBar.GetComponent<DashBarManager> ();
+		}
+
+		if (mainCamera) {
+			m_cameraShake = mainCamera.GetComponent<CameraShake> ();
 		}
 	}
 	
@@ -96,6 +107,14 @@ public class GameManager : MonoBehaviour {
 
 	public DashBarManager DashBarManager() {
 		return m_dashBarManager;
+	}
+	#endregion
+
+	#region CameraShake
+	public void ShakeCamera() {
+		if (m_cameraShake) {
+			m_cameraShake.ShakeCamera (0.45f, 0.02f);
+		}
 	}
 	#endregion
 }

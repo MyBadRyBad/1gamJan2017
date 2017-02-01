@@ -64,6 +64,7 @@ public class PlayerCollision : MonoBehaviour {
 	IEnumerator CreateExplosion(Transform t, float delay) {
 		yield return new WaitForSeconds (delay);
 
+		GameManager.gm.ShakeCamera ();
 		PlayRandomAudioClip (endDiveClips, false);
 
 		if (explosionPrefab) {

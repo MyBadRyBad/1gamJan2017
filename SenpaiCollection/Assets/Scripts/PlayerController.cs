@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour {
 	[Header("Jump Velocities")]
 	[SerializeField] private float m_hopForwardVelocity = 25.0f;
 	[SerializeField] private float m_hopUpwardVelocity = 75.0f;
-	[SerializeField] private float m_fallForwardVelocity = 100.0f;
+	[SerializeField] private float m_fallForwardVelocity = 130.0f;
 	[SerializeField] private float m_fallUpwardVelocity = 125.0f;
 
 	[Header("Wait Between Animations")]
