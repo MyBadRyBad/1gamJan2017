@@ -76,7 +76,7 @@ public class PlayerController : MonoBehaviour {
 		UpdateDash ();
 
 		if (Input.GetKeyDown (KeyCode.Z)) {
-			StartCoroutine(ExecuteGrab());
+			Dive ();
 		}
 	}
 
@@ -203,7 +203,7 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 		
-	IEnumerator ExecuteGrab() {
+	IEnumerator ExecuteDive() {
 		m_disableControls = true;
 
 		// move the player forward and animate the pre-jump
@@ -245,4 +245,8 @@ public class PlayerController : MonoBehaviour {
 	} 
 
 	#endregion
+
+	public void Dive () {
+		StartCoroutine(ExecuteDive());
+	}
 }
