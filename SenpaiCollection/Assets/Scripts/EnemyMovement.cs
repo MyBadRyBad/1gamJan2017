@@ -74,7 +74,8 @@ public class EnemyMovement : MonoBehaviour {
 		}
 
 		// setup animation
-		m_animation["down_20"].wrapMode = WrapMode.Once;
+		m_animation ["down_20"].wrapMode = WrapMode.Once;
+		m_animation ["down_20"].speed = 0.7f;
 	}
 		
 	// Update is called once per frame
@@ -169,12 +170,40 @@ public class EnemyMovement : MonoBehaviour {
 	#endregion
 
 	#region collision methods
-	public void AnimateCollision() {
-		if (m_state != EnemyState.Collapse) {
-			m_animation.Play ("down_20");
-			m_state = EnemyState.Collapse;
-			m_navMeshAgent.Stop ();
-		}
+	public void AnimateCollisionWithDelay(float delay) {
+		StartCoroutine (AnimateCollision (delay));
 	}
+
+	IEnumerator AnimateCollision(float delay) {
+		// first set the state
+		m_state = EnemyState.Collapse;
+
+		// stop the navmesh
+		m_navMeshAgent.Stop ();
+
+		// set the animation to idle so the enemy doesn't moonwalk
+		m_animation.Play ("idle_01");
+
+		// wait for the delay
+		yield return new WaitForSeconds(delay);
+
+		// call animation
+		m_animation.Play ("down_20");
+	}
+	#endregion
+
+	#region getter methods
+	public bool DidCollapse() {
+		return m_state == EnemyState.Collapse;
+	}
+
+	public bool IsWalking() {
+		return m_state == EnemyState.Walking;
+	}
+
+	public bool IsIdle() {
+		return m_state == EnemyState.Idle;
+	}
+
 	#endregion
 }

@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour {
 	 private float m_jumpForwardVelocity = 100.0f;
 	 private float m_jumpUpwardVelocity = 175.0f;
 	[Header("Jump Velocities")]
-	[SerializeField] private float m_hopForwardVelocity = 100.0f;
+	[SerializeField] private float m_hopForwardVelocity = 25.0f;
 	[SerializeField] private float m_hopUpwardVelocity = 75.0f;
 	[SerializeField] private float m_fallForwardVelocity = 100.0f;
 	[SerializeField] private float m_fallUpwardVelocity = 175.0f;
@@ -205,6 +205,10 @@ public class PlayerController : MonoBehaviour {
 		
 	IEnumerator ExecuteDive() {
 		m_disableControls = true;
+
+		// remove any existing force
+		m_playerRigidbody.velocity = Vector3.zero;
+		m_playerRigidbody.angularVelocity = Vector3.zero;
 
 		// move the player forward and animate the pre-jump
 		TriggerJump (m_hopForwardVelocity, m_hopUpwardVelocity);

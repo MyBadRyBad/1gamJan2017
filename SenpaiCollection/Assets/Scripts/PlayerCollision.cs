@@ -16,19 +16,31 @@ public class PlayerCollision : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Enemy")) {
-			// remove the enemy
-	//		Destroy(other.gameObject);
 			EnemyMovement enemyMovement = other.gameObject.GetComponent<EnemyMovement>();
-			enemyMovement.AnimateCollision ();
 
-			//gameObject.transform.LookAt(
-			gameObject.transform.LookAt(other.gameObject.transform.position);
-			m_playerController.Dive();
+			if (!enemyMovement.DidCollapse ()) {
+				
+				// have the enemy face the player
+				other.gameObject.transform.LookAt(transform);
 
 
-			// update the points
-			GameManager.gm.AddPoints(1);
-			GameManager.gm.AddTime (5.0f);
+				// animate the enemy
+				enemyMovement.AnimateCollisionWithDelay (.7f);
+
+				// disable collision so that player can travel max distance for dive
+				Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
+
+				// dive towards the enemy
+				transform.LookAt(other.gameObject.transform);
+				m_playerController.Dive();
+
+
+				// update the points
+				GameManager.gm.AddPoints(1);
+				GameManager.gm.AddTime (5.0f);
+			}
+				
 		}
 	}
+
 }
