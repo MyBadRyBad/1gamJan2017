@@ -82,21 +82,26 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate ()
 	{
-		// Store the input axes.
-		float horizontal = Input.GetAxisRaw("Horizontal");
-		float vertical = Input.GetAxisRaw("Vertical");
+		if (!m_disableControls) {
+			// Store the input axes.
+			float horizontal = Input.GetAxisRaw("Horizontal");
+			float vertical = Input.GetAxisRaw("Vertical");
 
-		// Move the player around the scene.
-		Move (horizontal, vertical);
+			if (!m_disableControls) {
+				// Move the player around the scene.
+				Move (horizontal, vertical);
 
-		// Execute dash if player holds down button
-		Dash (Input.GetButton ("Jump"));
+				// Execute dash if player holds down button
+				Dash (Input.GetButton ("Jump"));
+			}
+
+			// Animate the player.
+			AnimateWalking (horizontal, vertical);
+
+		}
 
 		// Execute jump if necessary
 		UpdateJumpVelocity();
-
-		// Animate the player.
-		Animating (horizontal, vertical);
 	}
 	#endregion
 
@@ -182,12 +187,19 @@ public class PlayerController : MonoBehaviour {
 	#endregion
 
 	#region animation methods
-	void Animating (float h, float v)
+	void AnimateWalking (float h, float v)
 	{
-		if (m_disableControls) {
+		// Create a boolean that is true if either of the input axes is non-zero.
+		bool walking = (h != 0f) || (v != 0f);
 
+		if (walking) {
+			if (m_isDashing && !GameManager.gm.DashBarManager().IsEmpty ()) {
+				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_RUN);
+			} else {
+				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_WALK);
+			}
 		} else {
-			AnimateWalking (h, v);
+			m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_IDLE);
 		}
 	}
 		
@@ -232,21 +244,5 @@ public class PlayerController : MonoBehaviour {
 		}
 	} 
 
-	void AnimateWalking(float h, float v) {
-		if (!m_disableControls) {
-			// Create a boolean that is true if either of the input axes is non-zero.
-			bool walking = (h != 0f) || (v != 0f);
-
-			if (walking) {
-				if (m_isDashing && !GameManager.gm.DashBarManager().IsEmpty ()) {
-					m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_RUN);
-				} else {
-					m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_WALK);
-				}
-			} else {
-				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_IDLE);
-			}
-		}
-	}
 	#endregion
 }

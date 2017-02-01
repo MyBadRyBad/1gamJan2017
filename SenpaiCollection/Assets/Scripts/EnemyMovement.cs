@@ -5,6 +5,12 @@ using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour {
 
+	public enum EnemyState {
+		Walking,
+		Idle,
+		Collapse
+	};
+
 	// how long should the enemy wander before leaving
 	public float wanderDuration = 20.0f;
 
@@ -44,6 +50,8 @@ public class EnemyMovement : MonoBehaviour {
 	private float m_roampointMinZ = -17.5f;
 	private float m_roampointMaxZ = -0.5f;
 
+	private EnemyState m_state = EnemyState.Idle;
+
 	#region Unity callbacks
 	void Awake() {
 		m_navMeshAgent = GetComponent<NavMeshAgent> ();
@@ -64,20 +72,23 @@ public class EnemyMovement : MonoBehaviour {
 		if (m_exitPoints.Length == 0) {
 			Debug.LogError("ExitPoints for " + gameObject.name + "is empty.");
 		}
+
+		// setup animation
+		m_animation["down_20"].wrapMode = WrapMode.Once;
 	}
 		
 	// Update is called once per frame
 	void Update () {
 		UpdateAnimation ();
 
-		if (!m_canRoam) 
+		if (!m_canRoam && m_state != EnemyState.Collapse) 
 			TriggerWanderDuration ();
 
-		if (m_shouldExit) {
+		if (m_shouldExit && m_state != EnemyState.Collapse) {
 			GoToRandomExit ();
 		} 
 
-		if (!m_isExiting) {
+		if (!m_isExiting && m_state != EnemyState.Collapse) {
 			RefreshRoamPoint ();
 			UpdateWanderTimer ();
 		}
@@ -119,14 +130,17 @@ public class EnemyMovement : MonoBehaviour {
 
 	#region Animation Methods
 	void UpdateAnimation() {
-		if (transform.position != m_previousPosition && m_navMeshAgent.velocity != Vector3.zero) {
-			m_animation.Play ("walk_00");
-		} else {
-			m_animation.Play ("idle_01");
+		if (m_state != EnemyState.Collapse) {
+			if (transform.position != m_previousPosition && m_navMeshAgent.velocity != Vector3.zero) {
+				m_animation.Play ("walk_00");
+				m_state = EnemyState.Walking;
+			} else {
+				m_animation.Play ("idle_01");
+				m_state = EnemyState.Idle;
+			}
+
+			m_previousPosition = transform.position;
 		}
-
-		m_previousPosition = transform.position;
-
 	}
 	#endregion
 
@@ -155,8 +169,12 @@ public class EnemyMovement : MonoBehaviour {
 	#endregion
 
 	#region collision methods
-	public void TriggerCollision() {
-
+	public void AnimateCollision() {
+		if (m_state != EnemyState.Collapse) {
+			m_animation.Play ("down_20");
+			m_state = EnemyState.Collapse;
+			m_navMeshAgent.Stop ();
+		}
 	}
 	#endregion
 }

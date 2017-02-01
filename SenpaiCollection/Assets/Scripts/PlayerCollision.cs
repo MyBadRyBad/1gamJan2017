@@ -7,7 +7,10 @@ public class PlayerCollision : MonoBehaviour {
 	void OnTriggerEnter(Collider other) {
 		if (other.CompareTag("Enemy")) {
 			// remove the enemy
-			Destroy(other.gameObject);
+	//		Destroy(other.gameObject);
+			EnemyMovement enemyMovement = other.gameObject.GetComponent<EnemyMovement>();
+			enemyMovement.AnimateCollision ();
+
 
 			// update the points
 			GameManager.gm.AddPoints(1);

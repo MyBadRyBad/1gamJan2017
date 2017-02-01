@@ -65,8 +65,6 @@ public class GameManager : MonoBehaviour {
 	#region UI methods
 	void UpdateUI() {
 		if (timerText) {
-
-
 			timerText.Text = currentTime.ToString ("F1");
 		}
 
