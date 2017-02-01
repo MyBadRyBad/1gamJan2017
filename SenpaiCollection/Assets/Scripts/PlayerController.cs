@@ -34,14 +34,14 @@ public class PlayerController : MonoBehaviour {
 	[Header("Jump Velocities")]
 	[SerializeField] private float m_hopForwardVelocity = 25.0f;
 	[SerializeField] private float m_hopUpwardVelocity = 75.0f;
-	[SerializeField] private float m_fallForwardVelocity = 100.0f;
-	[SerializeField] private float m_fallUpwardVelocity = 175.0f;
+	[SerializeField] private float m_fallForwardVelocity = 200.0f;
+	[SerializeField] private float m_fallUpwardVelocity = 105.0f;
 
 	[Header("Wait Between Animations")]
 	[SerializeField] private float m_preparationJumpAnimationWait = 0.6f;
 	[SerializeField] private float m_jumpAnimationWait = 0.5f;
 	[SerializeField] private float m_fallAnimationWait = 1.0f;
-	[SerializeField] private float m_endAnimationWait = 1.0f;
+	[SerializeField] private float m_endAnimationWait = 0.8f;
 
 	[Header("Animation Speeds")]
 	[SerializeField] private float m_firstHopAnimationSpeed = 1.0f;

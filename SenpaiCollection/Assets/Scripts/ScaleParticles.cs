@@ -9,7 +9,7 @@ public class ScaleParticles : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		m_particleSystem = GetComponent<ParticleSystem> ();
-		ParticleScaler.Scale (m_particleSystem, 0.5f);
+		ParticleScaler.Scale (m_particleSystem, 0.85f);
 	}
 	
 	// Update is called once per frame

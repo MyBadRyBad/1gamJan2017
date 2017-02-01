@@ -36,7 +36,8 @@ public class PlayerCollision : MonoBehaviour {
 				transform.LookAt(other.gameObject.transform);
 				m_playerController.Dive();
 
-				StartCoroutine (createExplosion ());
+				StartCoroutine (CreateExplosion (gameObject.transform, 1.3f));
+				StartCoroutine (DestroyObject (other.gameObject, 1.3f));
 
 				// update the points
 				GameManager.gm.AddPoints(1);
@@ -46,11 +47,16 @@ public class PlayerCollision : MonoBehaviour {
 		}
 	}
 
-	IEnumerator createExplosion() {
-		yield return new WaitForSeconds (0.7f);
+	IEnumerator CreateExplosion(Transform t, float delay) {
+		yield return new WaitForSeconds (delay);
 
 		if (explosionPrefab) {
-			Instantiate (explosionPrefab, transform.position, transform.rotation); 
+			Instantiate (explosionPrefab, t.position, t.rotation); 
 		}
+	}
+
+	IEnumerator DestroyObject(GameObject g, float delay) {
+		yield return new WaitForSeconds (delay);
+		GameObject.Destroy (g);
 	}
 }
