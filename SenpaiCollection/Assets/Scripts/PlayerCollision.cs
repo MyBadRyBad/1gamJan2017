@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCollision : MonoBehaviour {
-	
+
+	public ParticleSystem explosionPrefab;
+
 	private PlayerController m_playerController;
 
 	void Awake() {
@@ -34,6 +36,7 @@ public class PlayerCollision : MonoBehaviour {
 				transform.LookAt(other.gameObject.transform);
 				m_playerController.Dive();
 
+				StartCoroutine (createExplosion ());
 
 				// update the points
 				GameManager.gm.AddPoints(1);
@@ -43,4 +46,11 @@ public class PlayerCollision : MonoBehaviour {
 		}
 	}
 
+	IEnumerator createExplosion() {
+		yield return new WaitForSeconds (0.7f);
+
+		if (explosionPrefab) {
+			Instantiate (explosionPrefab, transform.position, transform.rotation); 
+		}
+	}
 }
