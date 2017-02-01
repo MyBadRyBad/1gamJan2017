@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+	public enum PlayerState {
+		Walking,
+		Dashing,
+		Idle,
+		Diving
+	};
+
 	// movement speed variables
 	public float defaultSpeed = 2.0f;
 	public float dashSpeed = 4.0f;
@@ -12,8 +19,6 @@ public class PlayerController : MonoBehaviour {
 	public float dashDecreaseRate = 2.75f;
 	public float dashIncreaseRate = 1.25f;
 	public float dashRefreshDelay = 2.0f;
-
-
 
 	// movement and animation
 	private Vector3 m_movement;
@@ -34,14 +39,14 @@ public class PlayerController : MonoBehaviour {
 	[Header("Jump Velocities")]
 	[SerializeField] private float m_hopForwardVelocity = 25.0f;
 	[SerializeField] private float m_hopUpwardVelocity = 75.0f;
-	[SerializeField] private float m_fallForwardVelocity = 200.0f;
-	[SerializeField] private float m_fallUpwardVelocity = 105.0f;
+	[SerializeField] private float m_fallForwardVelocity = 100.0f;
+	[SerializeField] private float m_fallUpwardVelocity = 125.0f;
 
 	[Header("Wait Between Animations")]
 	[SerializeField] private float m_preparationJumpAnimationWait = 0.6f;
 	[SerializeField] private float m_jumpAnimationWait = 0.5f;
 	[SerializeField] private float m_fallAnimationWait = 1.0f;
-	[SerializeField] private float m_endAnimationWait = 0.8f;
+	[SerializeField] private float m_endAnimationWait = 0.5f;
 
 	[Header("Animation Speeds")]
 	[SerializeField] private float m_firstHopAnimationSpeed = 1.0f;
@@ -49,6 +54,9 @@ public class PlayerController : MonoBehaviour {
 	[SerializeField] private float m_jumpFallAnimationSpeed = 2.0f;
 	[SerializeField] private float m_jumpEndAnimationSpeed = 2.0f;
 
+
+
+	private PlayerState m_playerState;
 
 	// flag to know when character is dashing
 	private bool m_isDashing = false;
@@ -70,6 +78,9 @@ public class PlayerController : MonoBehaviour {
 	void Start () {
 		// set up timers
 		m_dashDelayTimer = dashRefreshDelay;
+
+		// setup start
+		m_playerState = PlayerState.Idle;
 	}
 
 	void Update () {
@@ -195,16 +206,20 @@ public class PlayerController : MonoBehaviour {
 		if (walking) {
 			if (m_isDashing && !GameManager.gm.DashBarManager().IsEmpty ()) {
 				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_RUN);
+				m_playerState = PlayerState.Dashing;
 			} else {
 				m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_WALK);
+				m_playerState = PlayerState.Walking;
 			}
 		} else {
 			m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_IDLE);
+			m_playerState = PlayerState.Idle;
 		}
 	}
 		
 	IEnumerator ExecuteDive() {
 		m_disableControls = true;
+		m_playerState = PlayerState.Diving;
 
 		// remove any existing force
 		m_playerRigidbody.velocity = Vector3.zero;
@@ -230,6 +245,8 @@ public class PlayerController : MonoBehaviour {
 		// end the entire animation
 		m_sdMecanimController.ChangeAnimationWithSpeed(QuerySDMecanimController.QueryChanSDAnimationType.JUMP_END, m_jumpEndAnimationSpeed);
 		m_disableControls = false;
+
+		m_playerState = PlayerState.Idle;
 	}
 
 	void TriggerJump (float forwardVelocity, float upwardVelocity) {
@@ -253,4 +270,22 @@ public class PlayerController : MonoBehaviour {
 	public void Dive () {
 		StartCoroutine(ExecuteDive());
 	}
+
+	#region getter methods
+	public bool IsIdle() {
+		return m_playerState == PlayerState.Idle;
+	}
+
+	public bool IsWalking() {
+		return m_playerState == PlayerState.Walking;
+	}
+
+	public bool IsDashing() {
+		return m_playerState == PlayerState.Dashing;
+	}
+
+	public bool IsDiving() {
+		return m_playerState == PlayerState.Diving;
+	}
+	#endregion
 }
