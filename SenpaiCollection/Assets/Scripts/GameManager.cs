@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour {
 	// UI elements
 	public SuperTextMesh timerText;
 	public SuperTextMesh pointsText;
+	public SuperTextMesh senpaiGetText;
 
 	// start time for the game timer
 	public float startTime = 30.0f;
@@ -35,6 +36,11 @@ public class GameManager : MonoBehaviour {
 
 	// refernce to the CameraShake script
 	private CameraShake m_cameraShake;
+
+	// reference to the player
+	private GameObject m_player;
+
+	private bool m_GameEnabled = false;
 
 	#region Unity callback
 	// Use this for initialization
@@ -56,12 +62,17 @@ public class GameManager : MonoBehaviour {
 		if (mainCamera) {
 			m_cameraShake = mainCamera.GetComponent<CameraShake> ();
 		}
+
+		m_player = GameObject.FindGameObjectWithTag ("Player");
+		m_player.GetComponent<PlayerController> ().SetEnableControls (false);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		UpdateGameTimer ();
-		UpdateUI ();
+		if (m_GameEnabled) {
+			UpdateGameTimer ();
+			UpdateUI ();
+		}
 	}
 
 	#endregion
@@ -84,10 +95,22 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void ShowSenpaiGetText() {
+		senpaiGetText.Text = "<drawAnim=Appear><c=watermelon><w=sassy>Senpai Get!!!";
+
+		StartCoroutine (HideSenpaiText (1.0f));
+
+	}
+
 	public void UpdateDashTextMesh(string newText) {
 		if (dashTextMesh.Text != newText) {
 			dashTextMesh.Text = newText;
 		}
+	}
+
+	IEnumerator HideSenpaiText(float delay) {
+		yield return new WaitForSeconds (delay);
+		senpaiGetText.UnRead ();
 	}
 	#endregion
 
@@ -108,6 +131,18 @@ public class GameManager : MonoBehaviour {
 	public DashBarManager DashBarManager() {
 		return m_dashBarManager;
 	}
+
+	public void EnableGame() {
+		m_GameEnabled = true;
+		m_player.GetComponent<PlayerController> ().SetEnableControls (true);
+
+	} 
+
+	public void DisableGame() {
+		m_GameEnabled = false;
+		m_player.GetComponent<PlayerController> ().SetEnableControls (false);
+	}
+
 	#endregion
 
 	#region CameraShake
@@ -117,4 +152,5 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 	#endregion
+
 }

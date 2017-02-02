@@ -85,10 +85,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Update () {
 		UpdateDash ();
-
-		if (Input.GetKeyDown (KeyCode.Z)) {
-			Dive ();
-		}
 	}
 
 	void FixedUpdate ()
@@ -136,18 +132,7 @@ public class PlayerController : MonoBehaviour {
 			transform.rotation = Quaternion.LookRotation (m_movement);
 		}
 	}
-
-
-	void UpdateGrabTimer() {
-		if (m_disableControls) {
-			m_grabTimer -= Time.deltaTime;
-
-			if (m_grabTimer <= 0.0f) {
-				m_disableControls = false;
-			}
-		}
-	}
-
+		
 	#endregion
 
 	#region Dashing
@@ -290,6 +275,10 @@ public class PlayerController : MonoBehaviour {
 
 	public bool IsDiving() {
 		return m_playerState == PlayerState.Diving;
+	}
+
+	public void SetEnableControls(bool enable) {
+		m_disableControls = !enable;
 	}
 	#endregion
 }

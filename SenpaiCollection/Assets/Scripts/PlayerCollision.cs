@@ -52,13 +52,19 @@ public class PlayerCollision : MonoBehaviour {
 
 				StartCoroutine (CreateExplosion (gameObject.transform, 1.3f));
 				StartCoroutine (DestroyObject (other.gameObject, 1.3f));
-
-				// update the points
-				GameManager.gm.AddPoints(1);
-				GameManager.gm.AddTime (5.0f);
+				StartCoroutine (UpdateGameManager (1.3f));
 			}
 				
 		}
+	}
+
+	IEnumerator UpdateGameManager(float delay) {
+		yield return new WaitForSeconds (delay);
+
+		// update the points
+		GameManager.gm.AddPoints(1);
+		GameManager.gm.AddTime (5.0f);
+		GameManager.gm.ShowSenpaiGetText ();
 	}
 
 	IEnumerator CreateExplosion(Transform t, float delay) {
