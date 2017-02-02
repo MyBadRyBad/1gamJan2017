@@ -14,6 +14,11 @@ public class EnemyMovement : MonoBehaviour {
 	// how long should the enemy wander before leaving
 	public float wanderDuration = 20.0f;
 
+	public AudioClip[] audioClips;
+
+	// refernce to the audio source
+	private AudioSource m_audioSource;
+
 	// reference to the animation
 	private Animation m_animation;
 
@@ -62,8 +67,14 @@ public class EnemyMovement : MonoBehaviour {
 		// setup roam timer
 		m_roamPointTimer = 0.0f;
 
-		// get reference to animator
+		// get references
 		m_animation = GetComponent<Animation>();
+		m_audioSource = GetComponent<AudioSource> ();
+
+		if (!m_audioSource) {
+			m_audioSource = gameObject.AddComponent<AudioSource> ();
+		}
+	
 	}
 
 	void Start() {
@@ -76,6 +87,10 @@ public class EnemyMovement : MonoBehaviour {
 		// setup animation
 		m_animation ["down_20"].wrapMode = WrapMode.Once;
 		m_animation ["down_20"].speed = 0.7f;
+
+		// setup audiosource
+		m_audioSource.pitch = 1.2f;
+		m_audioSource.volume = 0.2f;
 	}
 		
 	// Update is called once per frame
@@ -128,6 +143,14 @@ public class EnemyMovement : MonoBehaviour {
 
 	#endregion
 
+	#region Audio playback
+	void PlayAudio() {
+		if (audioClips.Length > 0) {
+			int index = Random.Range (0, audioClips.Length);
+			m_audioSource.PlayOneShot (audioClips [index]);
+		}
+	}
+	#endregion
 
 	#region Animation Methods
 	void UpdateAnimation() {
@@ -186,6 +209,9 @@ public class EnemyMovement : MonoBehaviour {
 
 		// wait for the delay
 		yield return new WaitForSeconds(delay);
+
+		// play audio clips
+		PlayAudio();
 
 		// call animation
 		m_animation.Play ("down_20");
