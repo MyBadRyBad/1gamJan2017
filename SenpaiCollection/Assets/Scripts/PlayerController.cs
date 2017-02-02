@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour {
 	// flag to trigger grab
 	[SerializeField]
 	private bool m_disableControls = false;
-
+	private bool m_disableCollisions = false;
 
 	#region Unity callbacks
 	void Awake() {
@@ -279,6 +279,14 @@ public class PlayerController : MonoBehaviour {
 
 	public void SetEnableControls(bool enable) {
 		m_disableControls = !enable;
+	}
+
+	public void SetEnableCollision(bool enable) {
+		m_disableCollisions = !enable;
+	}
+
+	public bool CollisionEnabled() {
+		return !m_disableCollisions;
 	}
 	#endregion
 }

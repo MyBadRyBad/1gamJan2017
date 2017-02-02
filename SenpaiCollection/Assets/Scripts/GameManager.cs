@@ -8,8 +8,14 @@ public class GameManager : MonoBehaviour {
 	// static reference for game manager
 	public static GameManager gm;
 
+	[Header("Camera")]
 	// refernce to the mainCamera
 	public Camera mainCamera;
+
+
+	[Header("UI Canvas")]
+	// canvas
+	public Canvas m_canvas;
 
 	// reference to dash super text
 	public SuperTextMesh dashTextMesh;
@@ -22,8 +28,21 @@ public class GameManager : MonoBehaviour {
 	public SuperTextMesh pointsText;
 	public SuperTextMesh senpaiGetText;
 
+	[Header("Add Points")]
+	public SuperTextMesh addPointPrefab;
+	public SuperTextMesh addTimePrefab;
+	public Transform addPointSpawnPosition;
+	public Transform addTimeSpawnPosition;
+
+	[Header("Game Logic")]
 	// start time for the game timer
 	public float startTime = 30.0f;
+
+
+	// references 
+	private DashBarManager m_dashBarManager;
+	private CameraShake m_cameraShake;
+	private GameObject m_player;
 
 	// game timer
 	private float currentTime;
@@ -31,14 +50,6 @@ public class GameManager : MonoBehaviour {
 	// global points
 	private int m_points;
 
-	// reference to the DashBarManager
-	private DashBarManager m_dashBarManager;
-
-	// refernce to the CameraShake script
-	private CameraShake m_cameraShake;
-
-	// reference to the player
-	private GameObject m_player;
 
 	private bool m_GameEnabled = false;
 
@@ -64,7 +75,8 @@ public class GameManager : MonoBehaviour {
 		}
 
 		m_player = GameObject.FindGameObjectWithTag ("Player");
-		m_player.GetComponent<PlayerController> ().SetEnableControls (false);
+
+		GameManager.gm.DisableGame ();
 	}
 	
 	// Update is called once per frame
@@ -80,6 +92,12 @@ public class GameManager : MonoBehaviour {
 	#region manager logic methods
 	void UpdateGameTimer() {
 		currentTime -= Time.deltaTime;
+
+		if (currentTime < 0.0f) {
+			currentTime = 0.0f;
+
+
+		}
 	}
 
 	#endregion
@@ -87,7 +105,13 @@ public class GameManager : MonoBehaviour {
 	#region UI methods
 	void UpdateUI() {
 		if (timerText) {
-			timerText.Text = currentTime.ToString ("F1");
+			if (currentTime <= 10.0f) {
+				timerText.Text = "<c=danger>" + currentTime.ToString ("F1");
+				timerText.size = 60.0f;
+			} else {
+				timerText.Text = "<c=normal>" + currentTime.ToString ("F1");
+				timerText.size = 40.0f;
+			}
 		}
 
 		if (pointsText) {
@@ -108,10 +132,41 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
+	public void CreateAddPointText() {
+		//Instantiate the text Mesh
+		SuperTextMesh textMesh = Instantiate (addPointPrefab, addPointSpawnPosition.position, addPointSpawnPosition.rotation) as SuperTextMesh;
+
+		// update the rect transform
+		textMesh.GetComponent<RectTransform> ().anchoredPosition = addPointSpawnPosition.GetComponent<RectTransform> ().anchoredPosition;
+
+		// set the parent to the canvas
+		textMesh.transform.SetParent (m_canvas.transform, false);
+	}
+
+	public void CreateAddTimeText() {
+		// Instantiate the text mesh
+		SuperTextMesh textMesh = Instantiate (addTimePrefab, addTimeSpawnPosition.position, addTimeSpawnPosition.rotation) as SuperTextMesh;
+
+		// update the rect transform
+		textMesh.GetComponent<RectTransform> ().anchoredPosition = addTimeSpawnPosition.GetComponent<RectTransform> ().anchoredPosition;
+
+		// set the parent to the canvas
+		textMesh.transform.SetParent (m_canvas.transform, false);
+	}
+
+	public void AnimatePointsTextMesh() {
+		pointsText.GetComponent<Animator> ().SetTrigger ("ScaleBounce");
+	}
+
+	public void AnimateTimeTextMesh() {
+		timerText.GetComponent<Animator> ().SetTrigger ("ScaleBounce");
+	}
+
 	IEnumerator HideSenpaiText(float delay) {
 		yield return new WaitForSeconds (delay);
 		senpaiGetText.UnRead ();
 	}
+		
 	#endregion
 
 
@@ -133,14 +188,18 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void EnableGame() {
+		PlayerController playerController = m_player.GetComponent<PlayerController> ();
+		playerController.SetEnableControls (true);
+		playerController.SetEnableCollision (true);
 		m_GameEnabled = true;
-		m_player.GetComponent<PlayerController> ().SetEnableControls (true);
 
 	} 
 
 	public void DisableGame() {
+		PlayerController playerController = m_player.GetComponent<PlayerController> ();
+		playerController.SetEnableControls (false);
+		playerController.SetEnableCollision (false);
 		m_GameEnabled = false;
-		m_player.GetComponent<PlayerController> ().SetEnableControls (false);
 	}
 
 	#endregion

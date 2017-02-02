@@ -32,7 +32,7 @@ public class PlayerCollision : MonoBehaviour {
 		if (other.CompareTag("Enemy")) {
 			EnemyMovement enemyMovement = other.gameObject.GetComponent<EnemyMovement>();
 
-			if (!enemyMovement.DidCollapse () && !m_playerController.IsDiving()) {
+			if (!enemyMovement.DidCollapse () && !m_playerController.IsDiving() && m_playerController.CollisionEnabled()) {
 				
 				// have the enemy face the player
 				other.gameObject.transform.LookAt(transform);
@@ -59,9 +59,16 @@ public class PlayerCollision : MonoBehaviour {
 	}
 
 	IEnumerator UpdateGameManager(float delay) {
-		yield return new WaitForSeconds (delay);
+		yield return new WaitForSeconds (0.8f);
+
+		GameManager.gm.CreateAddPointText ();
+		GameManager.gm.CreateAddTimeText ();
+
+		yield return new WaitForSeconds (delay - 0.8f);
 
 		// update the points
+		GameManager.gm.AnimatePointsTextMesh();
+		GameManager.gm.AnimateTimeTextMesh ();
 		GameManager.gm.AddPoints(1);
 		GameManager.gm.AddTime (5.0f);
 		GameManager.gm.ShowSenpaiGetText ();

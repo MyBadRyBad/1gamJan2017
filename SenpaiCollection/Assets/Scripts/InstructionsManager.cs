@@ -10,6 +10,7 @@ public class InstructionsManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		instructionsText.Text = "Collect<br>all<br><j>Senpais!";
+
 		StartCoroutine (EnableGame (5.0f));
 	
 	}
