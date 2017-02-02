@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour {
 	// dash variables
 	public float dashDecreaseRate = 2.75f;
 	public float dashIncreaseRate = 1.25f;
-	public float dashRefreshDelay = 2.0f;
+	public float dashRefreshDelay = 3.0f;
 
 	// movement and animation
 	private Vector3 m_movement;
@@ -61,6 +61,7 @@ public class PlayerController : MonoBehaviour {
 	// flag to know when character is dashing
 	private bool m_isDashing = false;
 	private bool m_dashDelayTriggered = false;
+	private bool m_dashButtonUpRefresh = true;
 
 	// flag to trigger grab
 	[SerializeField]
@@ -94,13 +95,18 @@ public class PlayerController : MonoBehaviour {
 			float horizontal = Input.GetAxisRaw("Horizontal");
 			float vertical = Input.GetAxisRaw("Vertical");
 
-			if (!m_disableControls) {
-				// Move the player around the scene.
-				Move (horizontal, vertical);
+			// Move the player around the scene.
+			Move (horizontal, vertical);
 
-				// Execute dash if player holds down button
+			// Execute dash if player holds down button
+			if (m_dashButtonUpRefresh) {
 				Dash (Input.GetButton ("Jump"));
 			}
+
+			if (Input.GetButtonUp("Jump")) {
+				m_dashButtonUpRefresh = true;
+			}
+
 
 			// Animate the player.
 			AnimateWalking (horizontal, vertical);
@@ -141,7 +147,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void UpdateDash() {
-		if (IsDashing() && !GameManager.gm.DashBarManager().IsEmpty ()) {
+		if (IsDashing () && !GameManager.gm.DashBarManager ().IsEmpty ()) {
 			// update the dash text to animate
 			GameManager.gm.UpdateDashTextMesh ("<j>Dash");
 
@@ -149,10 +155,9 @@ public class PlayerController : MonoBehaviour {
 			SetupDashDelayTimer ();
 
 			// decrease the dash bar 
-			GameManager.gm.DashBarManager().Decrease (dashDecreaseRate);
+			GameManager.gm.DashBarManager ().Decrease (dashDecreaseRate);
 
-		} 
-		else if (!GameManager.gm.DashBarManager().IsFull()) {
+		} else if (!GameManager.gm.DashBarManager ().IsFull ()) {
 			// update the dash text to stop animation
 			GameManager.gm.UpdateDashTextMesh ("Dash");
 
@@ -160,8 +165,15 @@ public class PlayerController : MonoBehaviour {
 			if (m_dashDelayTriggered) {
 				UpdateDashDelayTimer ();
 			} else {
-				GameManager.gm.DashBarManager().Increase (dashIncreaseRate);
+				// increase the dash bar
+				GameManager.gm.DashBarManager ().Increase (dashIncreaseRate);
+
 			}
+		} else if (GameManager.gm.DashBarManager ().IsEmpty ()) {
+			// flag refresh so that if the player is holding down the dash button when the dash bar going empty,
+			// the dash bar will continue to refill
+			m_dashButtonUpRefresh = false;
+			m_isDashing = false;
 		}
 
 

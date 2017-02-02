@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour {
 	// static reference for game manager
 	public static GameManager gm;
 
+	// reference to the 
+
 	[Header("Camera")]
 	// refernce to the mainCamera
 	public Camera mainCamera;
