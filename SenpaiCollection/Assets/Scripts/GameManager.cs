@@ -59,9 +59,11 @@ public class GameManager : MonoBehaviour {
 	// global points
 	private int m_points;
 
-
+	// game enabled trigger
 	private bool m_GameEnabled = false;
 
+	// instructions trigger
+	private bool m_instructionsTrigger = true;
 
 	#region Unity callback
 	// Use this for initialization
@@ -91,12 +93,18 @@ public class GameManager : MonoBehaviour {
 		// setup game
 		GameManager.gm.DisableGame ();
 		PlayerStats.Clear ();
-		instructionsText.Text = "Collect<br>all<br><j>Senpais!";
 		StartCoroutine (StartGame (5.0f));
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
+		if (m_instructionsTrigger) {
+			instructionsText.Text = " ";
+			instructionsText.Text = "Collect<br>all<br><j>Senpais!";
+			m_instructionsTrigger = false;
+		}
+
 		if (m_GameEnabled) {
 			UpdateGameTimer ();
 			UpdateUI ();

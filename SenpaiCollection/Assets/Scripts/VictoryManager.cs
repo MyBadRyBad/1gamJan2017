@@ -238,8 +238,7 @@ public class VictoryManager : MonoBehaviour {
 		
 
 	public void LoadScene(string scene) {
-		Debug.Log ("load scene");
-	//	SceneManager.LoadSceneAsync (scene);
+		SceneManager.LoadSceneAsync (scene);
 	}
 
 	#endregion
