@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour {
 	void UpdateDash() {
 		if (IsDashing () && !GameManager.gm.DashBarManager ().IsEmpty ()) {
 			// update the dash text to animate
-			GameManager.gm.UpdateDashTextMesh ("<j>Dash");
+			GameManager.gm.UpdateDashTextMesh ("<j>Dash <size=26> (space bar) </s>");
 
 			// refresh delay timer 
 			SetupDashDelayTimer ();
@@ -159,7 +159,7 @@ public class PlayerController : MonoBehaviour {
 
 		} else if (!GameManager.gm.DashBarManager ().IsFull ()) {
 			// update the dash text to stop animation
-			GameManager.gm.UpdateDashTextMesh ("Dash");
+			GameManager.gm.UpdateDashTextMesh ("Dash <size=26> (space bar) </s>");
 
 			//  increase the dash bar only if the delay is over.
 			if (m_dashDelayTriggered) {
