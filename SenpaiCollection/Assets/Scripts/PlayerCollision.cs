@@ -89,6 +89,10 @@ public class PlayerCollision : MonoBehaviour {
 	}
 
 	IEnumerator DestroyObject(GameObject g, float delay) {
+		// first store the senpai
+		GameManager.gm.StoreSenpaiType (g.GetComponent<EnemyMovement> ().senpaiType);
+
+		// wait and then destroy
 		yield return new WaitForSeconds (delay);
 		GameObject.Destroy (g);
 	}

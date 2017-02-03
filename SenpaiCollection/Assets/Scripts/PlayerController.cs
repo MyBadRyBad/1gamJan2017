@@ -194,6 +194,8 @@ public class PlayerController : MonoBehaviour {
 
 	#endregion
 
+
+
 	#region animation methods
 	void AnimateWalking (float h, float v)
 	{
@@ -261,6 +263,7 @@ public class PlayerController : MonoBehaviour {
 			m_playerRigidbody.AddForce(forwardForce + upwardForce);
 		}
 	} 
+		
 
 	#endregion
 

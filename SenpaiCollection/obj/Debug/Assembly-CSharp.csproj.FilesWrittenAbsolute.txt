@@ -21,3 +21,5 @@
 /Users/ryanbadilla/gamedev/onegameamonth/1gamJan2017/SenpaiCollection/Temp/bin/Debug/Mono.Cecil.Mdb.dll
 /Users/ryanbadilla/gamedev/onegameamonth/1gamJan2017/SenpaiCollection/Temp/bin/Debug/GETween.dll
 /Users/ryanbadilla/gamedev/onegameamonth/1gamJan2017/SenpaiCollection/Temp/bin/Debug/GUIAnimatorFREE.dll
+/Users/ryanbadilla/gamedev/onegameamonth/1gamJan2017/SenpaiCollection/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/ryanbadilla/gamedev/onegameamonth/1gamJan2017/SenpaiCollection/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb

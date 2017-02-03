@@ -14,6 +14,9 @@ public class EnemyMovement : MonoBehaviour {
 	// how long should the enemy wander before leaving
 	public float wanderDuration = 20.0f;
 
+	public PlayerStats.SenpaiType senpaiType = PlayerStats.SenpaiType.SenpaiRedJacket;
+
+	// audio clips for collision
 	public AudioClip[] audioClips;
 
 	// refernce to the audio source
@@ -155,7 +158,7 @@ public class EnemyMovement : MonoBehaviour {
 	#region Animation Methods
 	void UpdateAnimation() {
 		if (m_state != EnemyState.Collapse) {
-			if (transform.position != m_previousPosition && m_navMeshAgent.velocity != Vector3.zero) {
+			if (transform.position != m_previousPosition && m_navMeshAgent.velocity != Vector3.zero && !HasReachedDestination()) {
 				m_animation.Play ("walk_00");
 				m_state = EnemyState.Walking;
 			} else {
@@ -165,6 +168,46 @@ public class EnemyMovement : MonoBehaviour {
 
 			m_previousPosition = transform.position;
 		}
+	}
+
+	string GetRandomIdleAnimation() {
+		int random = Random.Range (0, 6);
+		string idleAnimationName = "idle_01";
+		switch (random) {
+		case 0:
+			idleAnimationName = "idle_01";
+			break;
+		case 1:
+			idleAnimationName = "greet_00";
+			break;
+		case 2:
+			idleAnimationName = "greet_01";
+			break;
+		case 3:
+			idleAnimationName = "embar_00";
+			break;
+		case 4:
+			idleAnimationName = "embar_01";
+			break;
+		case 5:
+			idleAnimationName = "refuse_00";
+			break;
+		case 6: 
+			idleAnimationName = "refuse_01";
+			break;
+		case 7:
+			idleAnimationName = "idle_01";
+			break;
+		case 8:
+			idleAnimationName = "idle_01";
+			break;
+		default:
+			idleAnimationName = "idle_01";
+			break;
+		}
+
+		return idleAnimationName;
+
 	}
 	#endregion
 
@@ -190,6 +233,20 @@ public class EnemyMovement : MonoBehaviour {
 		float z = Random.Range (min_z, max_z);
 		return new Vector3 (x, 0.0f, z);
 	}
+
+	bool HasReachedDestination() {
+		// Check if we've reached the destination
+		if (!m_navMeshAgent.pathPending) {
+			if (m_navMeshAgent.remainingDistance <= m_navMeshAgent.stoppingDistance){
+				if (!m_navMeshAgent.hasPath || m_navMeshAgent.velocity.sqrMagnitude == 0f) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	#endregion
 
 	#region collision methods
@@ -205,7 +262,7 @@ public class EnemyMovement : MonoBehaviour {
 		m_navMeshAgent.Stop ();
 
 		// set the animation to idle so the enemy doesn't moonwalk
-		m_animation.Play ("idle_01");
+		m_animation.Play (GetRandomIdleAnimation());
 
 		// wait for the delay
 		yield return new WaitForSeconds(delay);
