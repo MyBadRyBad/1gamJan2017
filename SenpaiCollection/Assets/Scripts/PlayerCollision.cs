@@ -41,7 +41,10 @@ public class PlayerCollision : MonoBehaviour {
 				enemyMovement.AnimateCollisionWithDelay (.7f);
 
 				// disable collision so that player can travel max distance for dive
-				Physics.IgnoreCollision(other.gameObject.GetComponent<Collider>(), GetComponent<Collider>());
+				foreach (Collider c in other.gameObject.GetComponentsInChildren<Collider>())
+				{
+					Physics.IgnoreCollision(c, GetComponent<Collider>());
+				}
 
 				// play begin dive audio
 				PlayRandomAudioClip(beginDiveClips, false);
