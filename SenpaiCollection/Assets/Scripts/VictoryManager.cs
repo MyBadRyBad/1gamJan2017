@@ -208,6 +208,9 @@ public class VictoryManager : MonoBehaviour {
 	}
 
 	void EnableReplayButtons() {
+		// first save the scores
+		SaveScores();
+
 		// first animate the player accordingly
 		AnimatePlayer();
 
@@ -269,6 +272,22 @@ public class VictoryManager : MonoBehaviour {
 		} else {
 			return senpaiRedJacket;
 		}
+	}
+
+	public void SaveScores() {
+		int currentTotal = PlayerPrefs.GetInt (Globals.PlayerPrefValues.TOTAL_POINTS, 0);
+		int highest = PlayerPrefs.GetInt (Globals.PlayerPrefValues.HIGHEST_SCORE, 0);
+
+		currentTotal = currentTotal + Mathf.RoundToInt(m_points);
+
+		if (highest < Mathf.RoundToInt(m_points)) {
+			highest = Mathf.RoundToInt(m_points);
+		}
+
+		PlayerPrefs.SetInt (Globals.PlayerPrefValues.TOTAL_POINTS, currentTotal);
+		PlayerPrefs.SetInt (Globals.PlayerPrefValues.HIGHEST_SCORE, highest);
+		PlayerPrefs.Save ();
+
 	}
 
 	#endregion

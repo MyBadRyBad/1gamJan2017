@@ -99,10 +99,11 @@ public class MainMenuManager : MonoBehaviour {
 		backButtonText.Text = "Back";
 
 		highestPointsTitleText.Text = "Most<br>collected";
-		totalPointsTitleText.Text = "Total Senpai<br>Collected";
+		totalPointsTitleText.Text = "Total Senpais<br>Collected";
 
-		highestPointsText.Text = "0";
-		totalPointsText.Text = "0";
+		highestPointsText.Text = PlayerPrefs.GetInt (Globals.PlayerPrefValues.HIGHEST_SCORE, 0).ToString ();
+		totalPointsText.Text = PlayerPrefs.GetInt (Globals.PlayerPrefValues.TOTAL_POINTS, 0).ToString ();
+
 	}
 
 	#endregion
