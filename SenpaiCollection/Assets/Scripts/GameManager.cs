@@ -62,9 +62,6 @@ public class GameManager : MonoBehaviour {
 	// game enabled trigger
 	private bool m_GameEnabled = false;
 
-	// instructions trigger
-	private bool m_instructionsTrigger = true;
-
 	#region Unity callback
 	// Use this for initialization
 	void Awake() {
@@ -99,11 +96,6 @@ public class GameManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if (m_instructionsTrigger) {
-			instructionsText.Text = " ";
-			instructionsText.Text = "Collect<br>all<br><j>Senpais!";
-			m_instructionsTrigger = false;
-		}
 
 		if (m_GameEnabled) {
 			UpdateGameTimer ();
@@ -124,6 +116,12 @@ public class GameManager : MonoBehaviour {
 		if (currentTime < 0.0f) {
 			currentTime = 0.0f;
 		}
+	}
+
+	public void ActivateScene() {
+		m_audioSource.Play ();
+		ShowInstructionsText ();
+		StartCoroutine (StartGame (5.0f));
 	}
 
 	#endregion
@@ -148,6 +146,11 @@ public class GameManager : MonoBehaviour {
 		if (pointsText) {
 			pointsText.Text = m_points.ToString ();
 		}
+	}
+
+	public void ShowInstructionsText() {
+		instructionsText.Text = " ";
+		instructionsText.Text = "Collect<br>all<br><j>Senpais!";
 	}
 
 	public void ShowSenpaiGetText() {
@@ -245,7 +248,7 @@ public class GameManager : MonoBehaviour {
 		senpaiGetText.Text = " ";
 
 		yield return new WaitForSeconds (delay - 3.0f);
-		SceneManager.LoadSceneAsync (levelName);
+		SceneTransitionManager.manager.TransitionToScene (3);
 	}
 
 	IEnumerator StartGame(float delay) {

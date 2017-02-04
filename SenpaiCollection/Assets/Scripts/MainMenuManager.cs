@@ -96,7 +96,8 @@ public class MainMenuManager : MonoBehaviour {
 		loadingText.Text = "<w>Loading";
 
 		// load scene
-		SceneManager.LoadSceneAsync (level);
+		SceneTransitionManager.manager.TransitionToScene(2);
+	//	SceneManager.LoadSceneAsync (level);
 	}
 
 	public void ShowCredits(bool show) {

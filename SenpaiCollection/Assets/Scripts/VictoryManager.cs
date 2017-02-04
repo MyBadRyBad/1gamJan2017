@@ -237,8 +237,8 @@ public class VictoryManager : MonoBehaviour {
 	}
 		
 
-	public void LoadScene(string scene) {
-		SceneManager.LoadSceneAsync (scene);
+	public void LoadScene(int scene) {
+		SceneTransitionManager.manager.TransitionToScene (scene);
 	}
 
 	#endregion
