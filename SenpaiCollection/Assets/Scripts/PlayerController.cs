@@ -85,7 +85,9 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void Update () {
-		UpdateDash ();
+		if (GameManager.gm.GameEnabled ()) {
+			UpdateDash ();
+		}
 	}
 
 	void FixedUpdate ()

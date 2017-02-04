@@ -21,9 +21,11 @@ public class SceneTransitionManager : MonoBehaviour {
 
 		// setup reference to game manager
 		if (manager == null)
-			manager = this.GetComponent<SceneTransitionManager>();
+			manager = this.GetComponent<SceneTransitionManager> ();
+	}
 
-		SceneManager.LoadScene( m_sceneIndex );
+	void Start() {
+		TransitionToScene (1);
 	}
 
 	public void TransitionToScene(int sceneIndex) {
@@ -99,8 +101,19 @@ public class SceneTransitionManager : MonoBehaviour {
 
 	void onTransitionComplete()
 	{
-		if (m_sceneIndex == 2) {
+		// Main Menu
+		if (m_sceneIndex == 1) {
+			MainMenuManager.manager.ActivateScene ();
+		} 
+
+		// Game
+		else if (m_sceneIndex == 2) {
 			GameManager.gm.ActivateScene ();
+		} 
+
+		// Victory
+		else if (m_sceneIndex == 3) {
+			VictoryManager.manager.ActivateScene ();
 		}
 
 		_isUiVisible = true;

@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class VictoryManager : MonoBehaviour {
 
+	public static VictoryManager manager;
+
 	[Header("Prefabs")]
 	//references to victory scene prefabs
 	public Transform environmentPrefab;
@@ -52,8 +54,17 @@ public class VictoryManager : MonoBehaviour {
 	private bool m_animateCount = false;
 
 	#region Unity callbacks
-	// inilialization
+
+	void Awake() {
+		if (manager == null) {
+			Debug.Log ("allocating manager");
+			manager = GetComponent<VictoryManager> ();
+		}
+	}
+
+	// initialization
 	void Start () {
+
 		// reference of List in PlayerStats for ease
 		m_senpaiList = PlayerStats.SenpaiTypeList;
 
@@ -61,14 +72,9 @@ public class VictoryManager : MonoBehaviour {
 			mainCamera = GameObject.FindGameObjectWithTag ("MainCamera");
 		}
 			
-
 		IncreaseCameraSpeed ();
 		SetupEnvironment ();
 		SetupCharacters ();
-
-		StartCoroutine (SetMoveCamera (true, 1.0f));
-
-
 	} 
 	
 	// Update is called once per frame
@@ -80,6 +86,11 @@ public class VictoryManager : MonoBehaviour {
 		}
 
 		UpdatePointsText ();
+	}
+
+	public void ActivateScene() {
+		
+		StartCoroutine (SetMoveCamera (true, 1.0f));
 	}
 
 	#endregion
@@ -197,7 +208,6 @@ public class VictoryManager : MonoBehaviour {
 	}
 
 	void EnableReplayButtons() {
-
 		// first animate the player accordingly
 		AnimatePlayer();
 

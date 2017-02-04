@@ -5,17 +5,21 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour {
-		
+
+	public static MainMenuManager manager;
+
 	[Header("Object references")]
 	public Transform player;
 	public Transform[] backgroundObjects;
 	public Transform[] senpaiObjects;
 
+	[Header("Audio source")]
+	public AudioSource audioSource;
+
 	[Header("Buttons")]
 	public Button playButton;
 	public Button creditsButton;
 	public Button backButton;
-
 
 	// references to the text meshes of the buttons
 	[Header("UI Text Meshes")]
@@ -24,6 +28,10 @@ public class MainMenuManager : MonoBehaviour {
 	public SuperTextMesh creditsButtonText;
 	public SuperTextMesh backButtonText;
 	public SuperTextMesh loadingText;
+	public SuperTextMesh totalPointsTitleText;
+	public SuperTextMesh totalPointsText;
+	public SuperTextMesh highestPointsTitleText;
+	public SuperTextMesh highestPointsText;
 
 	[Header("Credits lines")]
 	public string[] creditsLines;
@@ -48,6 +56,13 @@ public class MainMenuManager : MonoBehaviour {
 	private bool m_showCredits = false;
 
 	#region unity Callback
+	void Awake() {
+		if (manager == null) {
+			Debug.Log ("allocating manager");
+			manager = GetComponent<MainMenuManager> ();
+		}
+	}
+
 	// Use this for initialization
 	void Start () {
 		if (player) {
@@ -61,6 +76,33 @@ public class MainMenuManager : MonoBehaviour {
 		AnimateObjects (backgroundObjects, backgroundObjSpeed);
 		AnimateObjects (senpaiObjects, senpaiMovementSpeed);
 		UpdateCredits ();
+	}
+
+	#endregion
+
+	#region activation
+	public void ActivateScene() {
+		audioSource.Play ();
+		mainText.Text = "<size=28>Watashi No</size><br><c=tak>Senpai<br></c><c=watermelon>Collection</c>";
+		StartCoroutine (ShowMenu (5.0f));
+
+	}
+
+	IEnumerator ShowMenu(float delay) {
+		yield return new WaitForSeconds (delay);
+
+		playButton.gameObject.SetActive (true);
+		creditsButton.gameObject.SetActive (true);
+
+		playButtonText.Text = "Play";
+		creditsButtonText.Text = "Credits";
+		backButtonText.Text = "Back";
+
+		highestPointsTitleText.Text = "Most<br>collected";
+		totalPointsTitleText.Text = "Total Senpai<br>Collected";
+
+		highestPointsText.Text = "0";
+		totalPointsText.Text = "0";
 	}
 
 	#endregion
@@ -128,7 +170,7 @@ public class MainMenuManager : MonoBehaviour {
 			// setup/show text
 			mainText.readDelay = 0.1f;
 			mainText.size = 64f;
-			mainText.Text = "<size=28>Watashi No</size><br><c=tak>Senpai<br>Collection";
+			mainText.Text = "<size=28>Watashi No</size><br><c=tak>Senpai<br></c><c=watermelon>Collection</c>";
 
 		}
 	}

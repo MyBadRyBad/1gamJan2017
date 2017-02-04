@@ -24,7 +24,8 @@ public class GameManager : MonoBehaviour {
 	public SuperTextMesh dashTextMesh;
 
 	// reference to the dash bar
-	public Image dashBar;
+	public Transform dashBar;
+	public Image dashBarImage;
 
 	// UI elements
 	public SuperTextMesh timerText;
@@ -65,9 +66,12 @@ public class GameManager : MonoBehaviour {
 	#region Unity callback
 	// Use this for initialization
 	void Awake() {
+		
 		// setup reference to game manager
-		if (gm == null)
-			gm = this.GetComponent<GameManager>();
+		if (gm == null) {
+			gm = this.GetComponent<GameManager> ();
+		}
+		
 
 		m_audioSource = GetComponent<AudioSource> ();
 
@@ -77,8 +81,8 @@ public class GameManager : MonoBehaviour {
 		currentTime = startTime;
 
 		// get a reference to the DashBarManager
-		if (dashBar != null) {
-			m_dashBarManager = dashBar.GetComponent<DashBarManager> ();
+		if (dashBarImage != null) {
+			m_dashBarManager = dashBarImage.GetComponent<DashBarManager> ();
 		}
 
 		if (mainCamera) {
@@ -90,13 +94,10 @@ public class GameManager : MonoBehaviour {
 		// setup game
 		GameManager.gm.DisableGame ();
 		PlayerStats.Clear ();
-		StartCoroutine (StartGame (5.0f));
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
-
 		if (m_GameEnabled) {
 			UpdateGameTimer ();
 			UpdateUI ();
@@ -120,9 +121,14 @@ public class GameManager : MonoBehaviour {
 
 	public void ActivateScene() {
 		m_audioSource.Play ();
+		dashBar.gameObject.SetActive (true);
+		timerText.Text = "<c=normal>30.0";
+		dashTextMesh.Text = "Dash <size=26> (space bar) </s>";
+		pointsText.Text = "0";
 		ShowInstructionsText ();
-		StartCoroutine (StartGame (5.0f));
+		StartCoroutine (StartGame (4.5f));
 	}
+		
 
 	#endregion
 
@@ -161,7 +167,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void UpdateDashTextMesh(string newText) {
-		if (dashTextMesh.Text != newText) {
+		if (dashBar && dashTextMesh && dashTextMesh.Text != newText) {
 			dashTextMesh.Text = newText;
 		}
 	}
@@ -260,10 +266,14 @@ public class GameManager : MonoBehaviour {
 
 	#endregion
 
-	#region getter/setter methods
+	#region Helper
 
 	public DashBarManager DashBarManager() {
 		return m_dashBarManager;
+	}
+
+	public bool GameEnabled() {
+		return m_GameEnabled;
 	}
 
 	public void EnableGame() {
