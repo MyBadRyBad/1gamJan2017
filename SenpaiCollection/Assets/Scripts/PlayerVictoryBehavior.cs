@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerVictoryBehavior : MonoBehaviour {
 
+	public AudioClip highscoreClip;
 	public AudioClip winClip;
 	public AudioClip loseClip;
 
@@ -25,8 +26,15 @@ public class PlayerVictoryBehavior : MonoBehaviour {
 		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_IDLE);
 	}
 
-	public void Win() {
+	public void WinHighScore() {
 		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_POSE_HELLO);
+
+		if (!m_audioSource.isPlaying)
+			m_audioSource.PlayOneShot (highscoreClip);
+	}
+
+	public void Win() {
+		m_sdMecanimController.ChangeAnimation (QuerySDMecanimController.QueryChanSDAnimationType.NORMAL_POSE_CUTE);
 
 		if (!m_audioSource.isPlaying)
 			m_audioSource.PlayOneShot (winClip);

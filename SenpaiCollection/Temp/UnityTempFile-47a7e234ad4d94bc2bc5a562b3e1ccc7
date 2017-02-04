@@ -1,0 +1,217 @@
+-debug
+-target:library
+-nowarn:0169
+-langversion:4
+-out:'Temp/Assembly-CSharp.dll'
+-r:'/Applications/Unity/Unity.app/Contents/Managed/UnityEngine.dll'
+-r:'Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll'
+-r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll'
+-r:'Assets/GUI Animator/Common/Plugins/GETween.dll'
+-r:'Assets/GUI Animator/GUI Animator FREE/Plugins/GUIAnimatorFREE.dll'
+-r:'/Applications/Unity/Unity.app/Contents/Managed/UnityEditor.dll'
+-r:'/Applications/Unity/PlaybackEngines/AppleTVSupport/UnityEditor.iOS.Extensions.Xcode.dll'
+-r:'/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll'
+-r:'/Applications/Unity/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll'
+-define:UNITY_5_3_OR_NEWER
+-define:UNITY_5_4_OR_NEWER
+-define:UNITY_5_5_OR_NEWER
+-define:UNITY_5_5_1
+-define:UNITY_5_5
+-define:UNITY_5
+-define:UNITY_ANALYTICS
+-define:ENABLE_AUDIO
+-define:ENABLE_CACHING
+-define:ENABLE_CLOTH
+-define:ENABLE_GENERICS
+-define:ENABLE_MULTIPLE_DISPLAYS
+-define:ENABLE_PHYSICS
+-define:ENABLE_SPRITERENDERER_FLIPPING
+-define:ENABLE_SPRITES
+-define:ENABLE_TERRAIN
+-define:ENABLE_UNET
+-define:ENABLE_UNITYEVENTS
+-define:ENABLE_WEBCAM
+-define:ENABLE_WWW
+-define:ENABLE_CLOUD_SERVICES_COLLAB
+-define:ENABLE_CLOUD_HUB
+-define:ENABLE_CLOUD_PROJECT_ID
+-define:ENABLE_CLOUD_SERVICES_UNET
+-define:ENABLE_CLOUD_SERVICES_BUILD
+-define:ENABLE_CLOUD_LICENSE
+-define:ENABLE_EDITOR_METRICS
+-define:ENABLE_EDITOR_METRICS_CACHING
+-define:INCLUDE_DYNAMIC_GI
+-define:INCLUDE_GI
+-define:RENDER_SOFTWARE_CURSOR
+-define:INCLUDE_PUBNUB
+-define:ENABLE_PLAYMODE_TESTS_RUNNER
+-define:ENABLE_SCRIPTING_NEW_CSHARP_COMPILER
+-define:UNITY_WEBGL
+-define:UNITY_WEBGL_API
+-define:UNITY_DISABLE_WEB_VERIFICATION
+-define:UNITY_GFX_USE_PLATFORM_VSYNC
+-define:ENABLE_CRUNCH_TEXTURE_COMPRESSION
+-define:ENABLE_UNITYWEBREQUEST
+-define:ENABLE_CLOUD_SERVICES
+-define:ENABLE_CLOUD_SERVICES_ADS
+-define:ENABLE_CLOUD_SERVICES_ANALYTICS
+-define:ENABLE_CLOUD_SERVICES_PURCHASING
+-define:ENABLE_CLOUD_SERVICES_CRASH_REPORTING
+-define:ENABLE_VR
+-define:ENABLE_IL2CPP
+-define:ENABLE_PROFILER
+-define:DEBUG
+-define:TRACE
+-define:UNITY_ASSERTIONS
+-define:UNITY_EDITOR
+-define:UNITY_EDITOR_64
+-define:UNITY_EDITOR_OSX
+-define:UNITY_TEAM_LICENSE
+'Assets/Clavian/SuperTextMesh/Sample/STMAppendExample.cs'
+'Assets/Clavian/SuperTextMesh/Sample/STMDialogueSample.cs'
+'Assets/Clavian/SuperTextMesh/Sample/STMEventInterpreter.cs'
+'Assets/Clavian/SuperTextMesh/Sample/STMInputStringDemo.cs'
+'Assets/Clavian/SuperTextMesh/Sample/STMSampleLink.cs'
+'Assets/Clavian/SuperTextMesh/Sample/STMSimpleButton.cs'
+'Assets/Clavian/SuperTextMesh/Sample/STMVertexMod.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMAudioClipData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMAutoClipData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMColorData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMDelayData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMDrawAnimData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMFontData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMGradientData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMJitterData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMMaterialData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMQuadData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMSoundClipData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMTextureData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMVoiceData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/Modules/STMWaveData.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/STMCustomInspectorTools.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/SuperTextMesh.cs'
+'Assets/Clavian/SuperTextMesh/Scripts/TextMeshData.cs'
+'Assets/Clavian/SuperTextMesh/Utility/STMCurveGenerator.cs'
+'Assets/GE Common Assets/GE Orbit Camera/Scripts/GE_OrbitCamera.cs'
+'Assets/GE Common Assets/GE Orbit Camera/Scripts/GE_OrbitCameraUI.cs'
+'Assets/GE Common Assets/GE Toggle Full Screen/Scripts/GE_ToggleFullScreenUI.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Characters/FirstPersonCharacter/Scripts/FirstPersonController.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Characters/FirstPersonCharacter/Scripts/HeadBob.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Characters/FirstPersonCharacter/Scripts/MouseLook.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Characters/FirstPersonCharacter/Scripts/RigidbodyFirstPersonController.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/AxisTouchButton.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/ButtonHandler.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/CameraSwitch.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/CrossPlatformInputManager.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/InputAxisScrollbar.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/Joystick.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/LevelReset.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/MobileControlRig.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/PlatformSpecific/MobileInput.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/PlatformSpecific/StandaloneInput.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/TiltInput.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/TouchPad.cs'
+'Assets/GE Common Assets/GE Touch Joystick/CrossPlatformInput/Scripts/VirtualInput.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Utility/CameraRefocus.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Utility/CurveControlledBob.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Utility/FOVKick.cs'
+'Assets/GE Common Assets/GE Touch Joystick/Utility/LerpControlledBob.cs'
+'Assets/GE Common Assets/Scripts/GE_UIResponder.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo00.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo01.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo02.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo03.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo04.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo05.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo06.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo07.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_Demo08.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_DemoPlaySound.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo (CSharp)/Scripts/GA_FREE_OpenOtherScene.cs'
+'Assets/GUI Animator/GUI Animator FREE/Demo Basic (CSharp)/Scripts/GUIAnimatorFREEDemo.cs'
+'Assets/Globals.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Props/99_ShowTime/Scripts/DetectPanel.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Props/99_ShowTime/Scripts/PanelPrefCollider.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/GUIController/CameraAction.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/GUIController/FaceToCamera.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/GUIController/GUIControllerSD.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/GUIController/RotateProp.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/GUIController/ShowTimeController.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/QuerySDController/QuerySDEmotionalController.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/QuerySDController/QuerySDMecanimController.cs'
+'Assets/Imported/PQAssets/Query-Chan-SD/Scripts/QuerySDController/QuerySDSoundController.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_AutoStopLoopedEffect.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_New.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RandomDir.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RandomDirectionTranslate.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_RotateCamera.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/Assets/CFX_Demo_Translate.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/UI/CFX_Demo_GTButton.cs'
+'Assets/JMO Assets/Cartoon FX/Demo/UI/CFX_Demo_GTToggle.cs'
+'Assets/JMO Assets/Cartoon FX/Scripts/CFX_AutoDestructShuriken.cs'
+'Assets/JMO Assets/Cartoon FX/Scripts/CFX_AutoRotate.cs'
+'Assets/JMO Assets/Cartoon FX/Scripts/CFX_AutodestructWhenNoChildren.cs'
+'Assets/JMO Assets/Cartoon FX/Scripts/CFX_InspectorHelp.cs'
+'Assets/JMO Assets/Cartoon FX/Scripts/CFX_LightIntensityFade.cs'
+'Assets/JMO Assets/Cartoon FX/Scripts/CFX_ShurikenThreadFix.cs'
+'Assets/JMO Assets/Cartoon FX/Spawn System/CFX_SpawnSystem.cs'
+'Assets/JMO Assets/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Misc/TCP2_Demo.cs'
+'Assets/JMO Assets/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Misc/TCP2_Demo_PBS.cs'
+'Assets/JMO Assets/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Misc/TCP2_Demo_PBS_View.cs'
+'Assets/JMO Assets/Toony Colors Pro/Demo TCP2/TCP2 Demo Assets/Misc/TCP2_Demo_View.cs'
+'Assets/JMO Assets/Toony Colors Pro/Scripts/TCP2_RuntimeUtils.cs'
+'Assets/Scripts/BeatSync/BeatCounter.cs'
+'Assets/Scripts/BeatSync/BeatObserver.cs'
+'Assets/Scripts/BeatSync/BeatSynchronizer.cs'
+'Assets/Scripts/BeatSync/PatternCounter.cs'
+'Assets/Scripts/BeatSync/SynchronizerData.cs'
+'Assets/Scripts/CameraFollow.cs'
+'Assets/Scripts/CameraShake.cs'
+'Assets/Scripts/DashBarManager.cs'
+'Assets/Scripts/Data/PlayerStats.cs'
+'Assets/Scripts/DespawnCollision.cs'
+'Assets/Scripts/EnemyMovement.cs'
+'Assets/Scripts/ExitPointCollision.cs'
+'Assets/Scripts/FootstepSoundClips.cs'
+'Assets/Scripts/GameManager.cs'
+'Assets/Scripts/HeartExplosion.cs'
+'Assets/Scripts/InstructionsManager.cs'
+'Assets/Scripts/MainMenuManager.cs'
+'Assets/Scripts/ParticleScaler.cs'
+'Assets/Scripts/PlayerCollision.cs'
+'Assets/Scripts/PlayerController.cs'
+'Assets/Scripts/PlayerVictoryBehavior.cs'
+'Assets/Scripts/ScaleParticles.cs'
+'Assets/Scripts/SceneTransitionManager.cs'
+'Assets/Scripts/SenpaiVictoryPose.cs'
+'Assets/Scripts/SpawnManager.cs'
+'Assets/Scripts/TimedObjectDestructor.cs'
+'Assets/Scripts/TreeDanceBehavior.cs'
+'Assets/Scripts/VehicleMovement.cs'
+'Assets/Scripts/VehicleSpawner.cs'
+'Assets/Scripts/VictoryManager.cs'
+'Assets/TransitionKit/TransitionKit.cs'
+'Assets/TransitionKit/TransitionKitDelegate.cs'
+'Assets/TransitionKit/transitions/BlurTransition.cs'
+'Assets/TransitionKit/transitions/DoorwayTransition.cs'
+'Assets/TransitionKit/transitions/FadeTransition.cs'
+'Assets/TransitionKit/transitions/FishEyeTransition.cs'
+'Assets/TransitionKit/transitions/ImageMaskTransition.cs'
+'Assets/TransitionKit/transitions/PixelateTransition.cs'
+'Assets/TransitionKit/transitions/RippleTransition.cs'
+'Assets/TransitionKit/transitions/SquaresTransition.cs'
+'Assets/TransitionKit/transitions/TriangleSlicesTransition.cs'
+'Assets/TransitionKit/transitions/VerticalSlicesTransition.cs'
+'Assets/TransitionKit/transitions/WindTransition.cs'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/System.Runtime.Serialization.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/System.Xml.Linq.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/UnityScript.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/UnityScript.Lang.dll'
+-r:'/Applications/Unity/Unity.app/Contents/MonoBleedingEdge/lib/mono/unity/Boo.Lang.dll'
+-sdk:unity

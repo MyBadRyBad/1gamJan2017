@@ -24,6 +24,7 @@ public class VictoryManager : MonoBehaviour {
 	public SuperTextMesh pointsText;
 	public SuperTextMesh replayText;
 	public SuperTextMesh mainMenuText;
+	public SuperTextMesh newHighscoreText;
 
 	public Button replayButton;
 	public Button mainMenuButton;
@@ -52,6 +53,7 @@ public class VictoryManager : MonoBehaviour {
 	// event flags
 	private bool m_moveCamera = false;
 	private bool m_animateCount = false;
+	private bool m_isNewHighscore = false;
 
 	#region Unity callbacks
 
@@ -197,6 +199,7 @@ public class VictoryManager : MonoBehaviour {
 				EnableReplayButtons ();
 			}
 			pointsText.Text = m_points.ToString ("f0");
+		
 		} 
 		// player collected nothing
 		else if (m_animateCount && PlayerStats.SenpaiTypeList.Count == 0) {
@@ -208,7 +211,10 @@ public class VictoryManager : MonoBehaviour {
 	}
 
 	void EnableReplayButtons() {
-		// first save the scores
+		// show high score text if necessary
+		ShowNewHighscore();
+
+		// save scores
 		SaveScores();
 
 		// first animate the player accordingly
@@ -224,7 +230,9 @@ public class VictoryManager : MonoBehaviour {
 		// show lose
 		if (m_points < 1) {
 			player.GetComponent<PlayerVictoryBehavior> ().Lose ();
-		} else { // show win
+		} else if (m_isNewHighscore) { // show new high score animation
+			player.GetComponent<PlayerVictoryBehavior> ().WinHighScore ();
+		} else { // show normal win
 			player.GetComponent<PlayerVictoryBehavior> ().Win ();
 		}
 			
@@ -272,6 +280,18 @@ public class VictoryManager : MonoBehaviour {
 		} else {
 			return senpaiRedJacket;
 		}
+	}
+
+	public void ShowNewHighscore() {
+		int highest = PlayerPrefs.GetInt (Globals.PlayerPrefValues.HIGHEST_SCORE, 0);
+		Debug.Log ("highest score: " + highest);
+		Debug.Log ("current score: " + m_points);
+		if (highest < Mathf.RoundToInt(m_points)) {
+			Debug.Log ("is new high score");
+			newHighscoreText.Text = "<c=watermelon>New Highscore!";
+			m_isNewHighscore = true;
+		}
+
 	}
 
 	public void SaveScores() {
