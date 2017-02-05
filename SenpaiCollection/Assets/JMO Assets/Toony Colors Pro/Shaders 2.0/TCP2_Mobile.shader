@@ -74,10 +74,11 @@ Shader "Toony Colors Pro 2/Mobile"
 			o.Normal = UnpackNormal(tex2D(_BumpMap, IN.uv_BumpMap));
 	#endif
 		}
-		
+
 		ENDCG
 		
 	}
+
 	
 	Fallback "Diffuse"
 	CustomEditor "TCP2_MaterialInspector"

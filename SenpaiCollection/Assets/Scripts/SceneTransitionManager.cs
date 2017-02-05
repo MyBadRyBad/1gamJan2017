@@ -59,7 +59,7 @@ public class SceneTransitionManager : MonoBehaviour {
 		var squares = new SquaresTransition()
 		{
 			nextScene = SceneManager.GetActiveScene().buildIndex == 1 ? 2 : 1,
-			duration = 2.0f,
+			duration = 1.0f,
 			squareSize = new Vector2( 5f, 4f ),
 			smoothness = 0.0f
 		};
